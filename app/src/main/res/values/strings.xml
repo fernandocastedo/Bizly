@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Bizly1</string>
+    <string name="app_logo">Logo de Bizly</string>
+    <string name="email_hint">Correo electrónico</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="login_button">Iniciar sesión</string>
+    <string name="register_button">Crear cuenta</string>
+    <string name="register_title">Registrar</string>
+    <string name="register_heading">Prepárate para comenzar</string>
+    <string name="confirm_password_hint">Confirmar Contraseña</string>
+    <string name="terms_text">Al crearte una cuenta aceptas nuestros</string>
+    <string name="terms_link">Términos y Condiciones</string>
+    <string name="continue_button">Continuar</string>
+    <string name="back">Volver</string>
 </resources>
