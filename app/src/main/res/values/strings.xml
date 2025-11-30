@@ -5,4 +5,45 @@
     <string name="password_hint">Contraseña</string>
     <string name="login_button">Iniciar sesión</string>
     <string name="register_button">Crear cuenta</string>
+
+    <!-- Dashboard Strings -->
+    <string name="dashboard_title">Dashboard</string>
+    <string name="welcome_subtitle">¡Bienvenido!</string>
+    <string name="btn_add_product">Agregar\nProducto</string>
+    <string name="btn_add_supply">Agregar\nInsumo</string>
+    
+    <!-- Dashboard Grid Buttons -->
+    <string name="btn_inventory">Inventario</string>
+    <string name="btn_sales">Ventas</string>
+    <string name="btn_customers">Clientes</string>
+    <string name="btn_employees">Empleado</string>
+    <string name="btn_costs">Costos</string>
+    <string name="btn_expenses">Gastos</string>
+
+    <!-- Bottom Nav -->
+    <string name="nav_home">Inicio</string>
+    <string name="nav_metrics">Métricas</string>
+    <string name="nav_profile">Perfil</string>
+
+    <!-- Add Product Strings -->
+    <string name="title_create_new_product">Crear nuevo producto</string>
+    <string name="btn_save">Guardar</string>
+    <string name="btn_add_img">Añadir Img</string>
+    <string name="label_scan_invoice">Escanear Factura</string>
+    <string name="hint_product_title">Título del Producto</string>
+    <string name="hint_description">Descripción</string>
+    <string name="hint_unit_price">Precio Unitario</string>
+    <string name="hint_quantity">Cantidad</string>
+    <string name="switch_compound_product">Producto Compuesto</string>
+    <string name="label_select_ingredients">Selecciona los insumos</string>
+    <string name="ingredient_chicken">Pollo</string>
+    <string name="ingredient_meat">Carne</string>
+    <string name="ingredient_cheese">Queso</string>
+    <string name="ingredient_lettuce">Lechuga</string>
+
+    <!-- Add Supply Strings -->
+    <string name="title_add_new_supply">Agregar nuevo insumo</string>
+    <string name="hint_supply_title">Título del Insumo</string>
+    <string name="label_total_price">Precio Total</string>
+    <string name="btn_add_supply_action">Agregar</string>
 </resources>
