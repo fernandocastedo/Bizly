@@ -1,17 +1,20 @@
 package com.example.bizly1;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.bizly1.R;
 import com.example.bizly1.adapter.ImageAdapter;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -23,11 +26,15 @@ public class AddProductActivity extends AppCompatActivity {
     private RecyclerView rvImages;
     private ImageAdapter imageAdapter;
     private List<Uri> imageUris;
-    private MaterialButton btnAddImage, btnScan, btnBottomSave, btnTopSave;
+    private View btnAddImage;
+    private MaterialButton btnSave;
     private ImageButton btnBack;
     private SwitchMaterial switchCompound;
     private LinearLayout layoutIngredients;
     private Spinner spinnerUnit;
+    
+    // ActivityResultLauncher for image selection
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +44,7 @@ public class AddProductActivity extends AppCompatActivity {
         // Initialize Views
         rvImages = findViewById(R.id.rvImages);
         btnAddImage = findViewById(R.id.btnAddImage);
-        btnScan = findViewById(R.id.btnScan);
-        btnBottomSave = findViewById(R.id.btnBottomSave);
-        btnTopSave = findViewById(R.id.btnTopSave);
+        btnSave = findViewById(R.id.btnSave);
         btnBack = findViewById(R.id.btnBack);
         switchCompound = findViewById(R.id.switchCompound);
         layoutIngredients = findViewById(R.id.layoutIngredients);
@@ -48,30 +53,42 @@ public class AddProductActivity extends AppCompatActivity {
         // Setup Back Button
         btnBack.setOnClickListener(v -> finish());
 
-        // Setup Image Carousel
+        // Setup Image Grid
         imageUris = new ArrayList<>();
         imageAdapter = new ImageAdapter(imageUris, position -> {
             imageUris.remove(position);
             imageAdapter.notifyItemRemoved(position);
         });
-        rvImages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvImages.setLayoutManager(new GridLayoutManager(this, 2));
         rvImages.setAdapter(imageAdapter);
 
-        btnAddImage.setOnClickListener(v -> {
-            if (imageUris.size() < 5) {
-                // Mock adding an image URI (In real app, open gallery intent)
-                // Using a placeholder resource URI for demo
-                Uri mockUri = Uri.parse("android.resource://" + getPackageName() + "/" + android.R.drawable.ic_menu_gallery);
-                imageUris.add(mockUri);
-                imageAdapter.notifyItemInserted(imageUris.size() - 1);
-            } else {
-                Toast.makeText(this, "Máximo 5 imágenes", Toast.LENGTH_SHORT).show();
+        // Setup Image Picker Launcher
+        imagePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Uri selectedImageUri = result.getData().getData();
+                    if (selectedImageUri != null) {
+                        if (imageUris.size() < 6) {
+                            imageUris.add(selectedImageUri);
+                            imageAdapter.notifyItemInserted(imageUris.size() - 1);
+                        } else {
+                            Toast.makeText(this, "Máximo 6 imágenes", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
             }
-        });
+        );
 
-        // Setup Scan Button
-        btnScan.setOnClickListener(v -> {
-            Toast.makeText(this, "Abrir Cámara / Escáner", Toast.LENGTH_SHORT).show();
+        btnAddImage.setOnClickListener(v -> {
+            if (imageUris.size() < 6) {
+                // Open gallery to select image
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                imagePickerLauncher.launch(intent);
+            } else {
+                Toast.makeText(this, "Máximo 6 imágenes", Toast.LENGTH_SHORT).show();
+            }
         });
 
         // Setup Spinner
@@ -88,14 +105,10 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
 
-        // Setup Save Buttons
-        View.OnClickListener saveListener = v -> {
+        // Setup Save Button
+        btnSave.setOnClickListener(v -> {
             Toast.makeText(this, "Producto Guardado", Toast.LENGTH_SHORT).show();
             finish();
-        };
-        btnBottomSave.setOnClickListener(saveListener);
-        btnTopSave.setOnClickListener(saveListener);
+        });
     }
 }
-
-

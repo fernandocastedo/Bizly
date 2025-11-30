@@ -29,6 +29,7 @@
     <string name="title_create_new_product">Crear nuevo producto</string>
     <string name="btn_save">Guardar</string>
     <string name="btn_add_img">Añadir Img</string>
+    <string name="btn_add_photo">Agregar foto</string>
     <string name="label_scan_invoice">Escanear Factura</string>
     <string name="hint_product_title">Título del Producto</string>
     <string name="hint_description">Descripción</string>
@@ -46,4 +47,13 @@
     <string name="hint_supply_title">Título del Insumo</string>
     <string name="label_total_price">Precio Total</string>
     <string name="btn_add_supply_action">Agregar</string>
+
+    <!-- Register Strings -->
+    <string name="back">Atrás</string>
+    <string name="register_title">Crear Cuenta</string>
+    <string name="register_heading">Regístrate</string>
+    <string name="confirm_password_hint">Confirmar Contraseña</string>
+    <string name="terms_text">Acepto los</string>
+    <string name="terms_link">Términos y Condiciones</string>
+    <string name="continue_button">Continuar</string>
 </resources>

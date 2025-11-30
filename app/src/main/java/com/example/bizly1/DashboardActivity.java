@@ -77,8 +77,8 @@ public class DashboardActivity extends AppCompatActivity {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_home) {
                 return true;
-            } else if (itemId == R.id.nav_inventory) {
-                Toast.makeText(this, "Inventario", Toast.LENGTH_SHORT).show();
+            } else if (itemId == R.id.nav_metrics) {
+                Toast.makeText(this, "Métricas", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (itemId == R.id.nav_profile) {
                 Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show();

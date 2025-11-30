@@ -10,39 +10,40 @@
     <!-- Top Bar -->
     <ImageButton
         android:id="@+id/btnBack"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@android:drawable/ic_menu_revert"
-        app:tint="@color/black"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_arrow_back"
+        app:tint="@color/primary_color"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/title_create_new_product"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="@id/btnBack"
-        app:layout_constraintEnd_toStartOf="@id/btnTopSave"
+        app:layout_constraintEnd_toStartOf="@id/btnSave"
         app:layout_constraintStart_toEndOf="@id/btnBack"
         app:layout_constraintTop_toTopOf="@id/btnBack" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnTopSave"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:id="@+id/btnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btn_save"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        app:strokeColor="@color/black"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:cornerRadius="12dp"
+        app:backgroundTint="@color/primary_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/btnBack"
-        app:layout_constraintBottom_toBottomOf="@id/btnBack"/>
+        app:layout_constraintBottom_toBottomOf="@id/btnBack" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -57,23 +58,21 @@
             android:orientation="vertical"
             android:paddingBottom="80dp">
 
-            <!-- Image Carousel -->
+            <!-- Image Grid -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvImages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_image_upload"
-                tools:itemCount="3" />
+                android:layout_marginBottom="16dp"
+                tools:listitem="@layout/item_image_upload" />
             
-            <com.google.android.material.button.MaterialButton
+            <!-- Add Image Button -->
+            <include
                 android:id="@+id/btnAddImage"
-                android:layout_width="wrap_content"
+                layout="@layout/item_add_image_button"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_add_img"
-                android:layout_gravity="end"
-                style="@style/Widget.MaterialComponents.Button.TextButton"/>
+                android:layout_marginBottom="16dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -87,7 +86,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_product_title"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                app:boxStrokeColor="@color/primary_stroke_selector"
+                app:boxStrokeWidth="2dp"
+                app:hintTextColor="@color/primary_color"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etProductTitle"
@@ -101,7 +107,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_description"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                app:boxStrokeColor="@color/primary_stroke_selector"
+                app:boxStrokeWidth="2dp"
+                app:hintTextColor="@color/primary_color"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etDescription"
@@ -116,7 +129,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_unit_price"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                app:boxStrokeColor="@color/primary_stroke_selector"
+                app:boxStrokeWidth="2dp"
+                app:hintTextColor="@color/primary_color"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPrice"
@@ -137,7 +157,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:hint="@string/hint_quantity"
-                    android:layout_marginEnd="8dp">
+                    android:layout_marginEnd="8dp"
+                    app:boxStrokeColor="@color/primary_stroke_selector"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etQuantity"
@@ -151,7 +178,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@android:drawable/btn_dropdown" />
+                    android:background="@drawable/spinner_background"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="40dp"
+                    android:minHeight="56dp" />
 
             </LinearLayout>
 
@@ -212,17 +242,6 @@
                         android:layout_columnWeight="1"/>
                 </GridLayout>
             </LinearLayout>
-            
-            <!-- Bottom Save Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnBottomSave"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="32dp"
-                android:text="@string/btn_save"
-                android:textSize="18sp"
-                app:cornerRadius="12dp"
-                app:backgroundTint="@color/primary_color" />
 
         </LinearLayout>
     </ScrollView>

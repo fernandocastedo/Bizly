@@ -25,12 +25,13 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bizly"
+            android:text="BIZLY"
             android:textSize="56sp"
             android:textStyle="bold"
-            android:textColor="#000000"
+            android:textColor="@color/primary_color"
             android:letterSpacing="0.05"
-            android:layout_marginTop="24dp" />
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/montserrat_semibold" />
 
         <!-- Logo de la app -->
         <ImageView
@@ -50,9 +51,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="56dp"
             android:hint="@string/email_hint"
-            app:boxStrokeColor="@color/primary_color"
+            app:boxStrokeColor="@color/primary_stroke_selector"
             app:boxStrokeWidth="2dp"
             app:hintTextColor="@color/primary_color"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -74,9 +79,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:hint="@string/password_hint"
-            app:boxStrokeColor="@color/primary_color"
+            app:boxStrokeColor="@color/primary_stroke_selector"
             app:boxStrokeWidth="2dp"
             app:hintTextColor="@color/primary_color"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             app:endIconMode="password_toggle"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -112,12 +121,15 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginTop="16dp"
-            android:text="Registrar Cuenta Nueva"
+            android:text="Registrar nueva cuenta"
+            android:textColor="@color/primary_color"
             android:textSize="18sp"
             android:textStyle="bold"
             android:letterSpacing="0.05"
             app:cornerRadius="12dp"
-            app:backgroundTint="@color/primary_color" />
+            app:backgroundTint="@color/white"
+            app:strokeColor="@color/primary_color"
+            app:strokeWidth="2dp" />
 
     </LinearLayout>
 

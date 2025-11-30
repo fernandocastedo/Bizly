@@ -6,9 +6,9 @@
         android:title="@string/nav_home" />
     
     <item
-        android:id="@+id/nav_inventory"
-        android:icon="@android:drawable/ic_menu_agenda"
-        android:title="@string/nav_inventory" />
+        android:id="@+id/nav_metrics" 
+        android:icon="@android:drawable/ic_menu_sort_by_size" 
+        android:title="@string/nav_metrics" />
 
     <item
         android:id="@+id/nav_profile"
