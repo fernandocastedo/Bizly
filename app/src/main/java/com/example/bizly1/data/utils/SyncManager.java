@@ -10,6 +10,7 @@ import com.example.bizly1.data.network.NetworkUtils;
 import com.example.bizly1.models.Cliente;
 import com.example.bizly1.models.Insumo;
 import com.example.bizly1.models.ProductoVenta;
+import com.example.bizly1.models.Sucursal;
 import com.example.bizly1.models.Venta;
 import com.google.gson.Gson;
 
@@ -47,6 +48,7 @@ public class SyncManager {
         sincronizarProductosVenta();
         sincronizarClientes();
         sincronizarVentas();
+        sincronizarSucursales();
     }
     
     /**
@@ -133,6 +135,8 @@ public class SyncManager {
                 procesarClienteSync(item);
             } else if ("Venta".equals(item.getTableName())) {
                 procesarVentaSync(item);
+            } else if ("Sucursal".equals(item.getTableName())) {
+                procesarSucursalSync(item);
             }
         } catch (Exception e) {
             Log.e(TAG, "Error al procesar item de sync queue", e);
@@ -549,6 +553,119 @@ public class SyncManager {
                     @Override
                     public void onFailure(Call<Venta> call, Throwable t) {
                         Log.e(TAG, "Error al sincronizar venta", t);
+                    }
+                });
+            }
+        }
+    }
+    
+    /**
+     * Sincroniza sucursales desde la API (pull)
+     */
+    public void sincronizarSucursales() {
+        if (!NetworkUtils.isNetworkAvailable(context)) {
+            Log.d(TAG, "No hay conexión para sincronizar sucursales");
+            return;
+        }
+        
+        apiService.obtenerTodasSucursales().enqueue(new Callback<List<Sucursal>>() {
+            @Override
+            public void onResponse(Call<List<Sucursal>> call, Response<List<Sucursal>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    for (Sucursal sucursal : response.body()) {
+                        Sucursal local = null;
+                        if (sucursal.getId() != null) {
+                            List<Sucursal> todas = dbHelper.obtenerTodasSucursales();
+                            for (Sucursal s : todas) {
+                                if (s.getServerId() != null && s.getServerId().equals(sucursal.getId())) {
+                                    local = s;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        if (local == null) {
+                            sucursal.setServerId(sucursal.getId());
+                            sucursal.setSyncStatus("synced");
+                            dbHelper.insertarSucursal(sucursal);
+                            Log.d(TAG, "Sucursal insertada: " + sucursal.getNombre());
+                        } else {
+                            sucursal.setId(local.getId());
+                            sucursal.setServerId(sucursal.getId());
+                            sucursal.setSyncStatus("synced");
+                            dbHelper.actualizarSucursal(sucursal);
+                            Log.d(TAG, "Sucursal actualizada: " + sucursal.getNombre());
+                        }
+                    }
+                    Log.d(TAG, "Sucursales sincronizadas desde API");
+                } else {
+                    Log.e(TAG, "Error al sincronizar sucursales: " + response.code());
+                }
+            }
+            
+            @Override
+            public void onFailure(Call<List<Sucursal>> call, Throwable t) {
+                Log.e(TAG, "Error de red al sincronizar sucursales", t);
+            }
+        });
+    }
+    
+    private void procesarSucursalSync(DBHelper.SyncQueueItem item) {
+        Sucursal sucursal = gson.fromJson(item.getJsonData(), Sucursal.class);
+        
+        if ("DELETE".equals(item.getOperation())) {
+            if (sucursal.getServerId() != null) {
+                Call<Void> call = apiService.eliminarSucursal(sucursal.getServerId());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            dbHelper.eliminarSyncQueue(item.getId());
+                            Log.d(TAG, "Sucursal eliminada en servidor");
+                        }
+                    }
+                    
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.e(TAG, "Error al sincronizar eliminación de sucursal", t);
+                    }
+                });
+            } else {
+                dbHelper.eliminarSyncQueue(item.getId());
+            }
+        } else {
+            Call<Sucursal> call = null;
+            switch (item.getOperation()) {
+                case "INSERT":
+                    call = apiService.crearSucursal(sucursal);
+                    break;
+                case "UPDATE":
+                    if (sucursal.getServerId() != null) {
+                        call = apiService.actualizarSucursal(sucursal.getServerId(), sucursal);
+                    } else {
+                        call = apiService.crearSucursal(sucursal);
+                    }
+                    break;
+            }
+            
+            if (call != null) {
+                call.enqueue(new Callback<Sucursal>() {
+                    @Override
+                    public void onResponse(Call<Sucursal> call, Response<Sucursal> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            Sucursal sucursalServer = response.body();
+                            sucursalServer.setId(sucursal.getId());
+                            sucursalServer.setServerId(sucursalServer.getId());
+                            sucursalServer.setSyncStatus("synced");
+                            dbHelper.actualizarSucursal(sucursalServer);
+                            dbHelper.eliminarSyncQueue(item.getId());
+                            Log.d(TAG, "Sucursal sincronizada: " + item.getOperation());
+                        }
+                    }
+                    
+                    @Override
+                    public void onFailure(Call<Sucursal> call, Throwable t) {
+                        Log.e(TAG, "Error al sincronizar sucursal", t);
                     }
                 });
             }

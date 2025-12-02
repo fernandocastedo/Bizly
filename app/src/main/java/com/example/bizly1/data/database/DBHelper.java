@@ -10,6 +10,7 @@ import com.example.bizly1.models.Cliente;
 import com.example.bizly1.models.Insumo;
 import com.example.bizly1.models.ProductoVenta;
 import com.example.bizly1.models.ProductoVentaInsumo;
+import com.example.bizly1.models.Sucursal;
 import com.example.bizly1.models.Venta;
 import com.example.bizly1.models.VentaProducto;
 
@@ -19,7 +20,7 @@ import java.util.List;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "bizlyDB.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     // Tablas
     private static final String TABLE_INSUMOS = "insumos";
@@ -28,6 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TABLE_CLIENTES = "clientes";
     private static final String TABLE_VENTAS = "ventas";
     private static final String TABLE_VENTA_PRODUCTO = "venta_producto";
+    private static final String TABLE_SUCURSALES = "sucursales";
     private static final String TABLE_SYNC_QUEUE = "sync_queue";
 
     // Columnas Insumos
@@ -102,6 +104,21 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String COL_VP_CANTIDAD = "cantidad";
     private static final String COL_VP_PRECIO_UNITARIO = "precio_unitario";
     private static final String COL_VP_SUBTOTAL = "subtotal";
+
+    // Columnas Sucursales
+    private static final String COL_SUCURSAL_ID = "id";
+    private static final String COL_SUCURSAL_EMPRESA_ID = "empresa_id";
+    private static final String COL_SUCURSAL_NOMBRE = "nombre";
+    private static final String COL_SUCURSAL_DIRECCION = "direccion";
+    private static final String COL_SUCURSAL_CIUDAD = "ciudad";
+    private static final String COL_SUCURSAL_LATITUD = "latitud";
+    private static final String COL_SUCURSAL_LONGITUD = "longitud";
+    private static final String COL_SUCURSAL_DEPARTAMENTO = "departamento";
+    private static final String COL_SUCURSAL_TELEFONO = "telefono";
+    private static final String COL_SUCURSAL_CREATED_AT = "created_at";
+    private static final String COL_SUCURSAL_UPDATED_AT = "updated_at";
+    private static final String COL_SUCURSAL_SYNC_STATUS = "sync_status";
+    private static final String COL_SUCURSAL_SERVER_ID = "server_id";
 
     // Columnas SyncQueue
     private static final String COL_SYNC_ID = "id";
@@ -218,6 +235,25 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL(createVentaProductoTable);
 
+        // Tabla Sucursales
+        String createSucursalesTable = "CREATE TABLE " + TABLE_SUCURSALES + " (" +
+                COL_SUCURSAL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL_SUCURSAL_EMPRESA_ID + " INTEGER, " +
+                COL_SUCURSAL_NOMBRE + " TEXT NOT NULL, " +
+                COL_SUCURSAL_DIRECCION + " TEXT, " +
+                COL_SUCURSAL_CIUDAD + " TEXT, " +
+                COL_SUCURSAL_LATITUD + " REAL, " +
+                COL_SUCURSAL_LONGITUD + " REAL, " +
+                COL_SUCURSAL_DEPARTAMENTO + " TEXT, " +
+                COL_SUCURSAL_TELEFONO + " TEXT, " +
+                COL_SUCURSAL_CREATED_AT + " TEXT, " +
+                COL_SUCURSAL_UPDATED_AT + " TEXT, " +
+                COL_SUCURSAL_SYNC_STATUS + " TEXT DEFAULT 'pending', " +
+                COL_SUCURSAL_SERVER_ID + " INTEGER" +
+                ")";
+
+        db.execSQL(createSucursalesTable);
+
         // Tabla SyncQueue
         String createSyncQueueTable = "CREATE TABLE " + TABLE_SYNC_QUEUE + " (" +
                 COL_SYNC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -312,6 +348,26 @@ public class DBHelper extends SQLiteOpenHelper {
                     ")";
 
             db.execSQL(createVentaProductoTable);
+        }
+        if (oldVersion < 4) {
+            // Crear nueva tabla para sucursales
+            String createSucursalesTable = "CREATE TABLE IF NOT EXISTS " + TABLE_SUCURSALES + " (" +
+                    COL_SUCURSAL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COL_SUCURSAL_EMPRESA_ID + " INTEGER, " +
+                    COL_SUCURSAL_NOMBRE + " TEXT NOT NULL, " +
+                    COL_SUCURSAL_DIRECCION + " TEXT, " +
+                    COL_SUCURSAL_CIUDAD + " TEXT, " +
+                    COL_SUCURSAL_LATITUD + " REAL, " +
+                    COL_SUCURSAL_LONGITUD + " REAL, " +
+                    COL_SUCURSAL_DEPARTAMENTO + " TEXT, " +
+                    COL_SUCURSAL_TELEFONO + " TEXT, " +
+                    COL_SUCURSAL_CREATED_AT + " TEXT, " +
+                    COL_SUCURSAL_UPDATED_AT + " TEXT, " +
+                    COL_SUCURSAL_SYNC_STATUS + " TEXT DEFAULT 'pending', " +
+                    COL_SUCURSAL_SERVER_ID + " INTEGER" +
+                    ")";
+
+            db.execSQL(createSucursalesTable);
         }
     }
 
@@ -1209,6 +1265,152 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return productos;
+    }
+
+    // ==================== MÉTODOS CRUD SUCURSALES ====================
+
+    public long insertarSucursal(Sucursal sucursal) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        if (sucursal.getId() != null) {
+            values.put(COL_SUCURSAL_ID, sucursal.getId());
+        }
+        if (sucursal.getEmpresaId() != null) {
+            values.put(COL_SUCURSAL_EMPRESA_ID, sucursal.getEmpresaId());
+        }
+        values.put(COL_SUCURSAL_NOMBRE, sucursal.getNombre());
+        values.put(COL_SUCURSAL_DIRECCION, sucursal.getDireccion());
+        values.put(COL_SUCURSAL_CIUDAD, sucursal.getCiudad());
+        if (sucursal.getLatitud() != null) {
+            values.put(COL_SUCURSAL_LATITUD, sucursal.getLatitud());
+        }
+        if (sucursal.getLongitud() != null) {
+            values.put(COL_SUCURSAL_LONGITUD, sucursal.getLongitud());
+        }
+        values.put(COL_SUCURSAL_DEPARTAMENTO, sucursal.getDepartamento());
+        values.put(COL_SUCURSAL_TELEFONO, sucursal.getTelefono());
+        values.put(COL_SUCURSAL_CREATED_AT, sucursal.getCreatedAt());
+        values.put(COL_SUCURSAL_UPDATED_AT, sucursal.getUpdatedAt());
+        values.put(COL_SUCURSAL_SYNC_STATUS, sucursal.getSyncStatus() != null ? sucursal.getSyncStatus() : "pending");
+        if (sucursal.getServerId() != null) {
+            values.put(COL_SUCURSAL_SERVER_ID, sucursal.getServerId());
+        }
+
+        long id = db.insert(TABLE_SUCURSALES, null, values);
+        db.close();
+        return id;
+    }
+
+    public boolean actualizarSucursal(Sucursal sucursal) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        if (sucursal.getEmpresaId() != null) {
+            values.put(COL_SUCURSAL_EMPRESA_ID, sucursal.getEmpresaId());
+        }
+        values.put(COL_SUCURSAL_NOMBRE, sucursal.getNombre());
+        values.put(COL_SUCURSAL_DIRECCION, sucursal.getDireccion());
+        values.put(COL_SUCURSAL_CIUDAD, sucursal.getCiudad());
+        if (sucursal.getLatitud() != null) {
+            values.put(COL_SUCURSAL_LATITUD, sucursal.getLatitud());
+        }
+        if (sucursal.getLongitud() != null) {
+            values.put(COL_SUCURSAL_LONGITUD, sucursal.getLongitud());
+        }
+        values.put(COL_SUCURSAL_DEPARTAMENTO, sucursal.getDepartamento());
+        values.put(COL_SUCURSAL_TELEFONO, sucursal.getTelefono());
+        values.put(COL_SUCURSAL_UPDATED_AT, sucursal.getUpdatedAt());
+        values.put(COL_SUCURSAL_SYNC_STATUS, sucursal.getSyncStatus() != null ? sucursal.getSyncStatus() : "pending");
+        if (sucursal.getServerId() != null) {
+            values.put(COL_SUCURSAL_SERVER_ID, sucursal.getServerId());
+        }
+
+        int rowsAffected = db.update(TABLE_SUCURSALES, values, COL_SUCURSAL_ID + " = ?",
+                new String[]{String.valueOf(sucursal.getId())});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+    public boolean eliminarSucursal(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete(TABLE_SUCURSALES, COL_SUCURSAL_ID + " = ?",
+                new String[]{String.valueOf(id)});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+    public Sucursal obtenerSucursal(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_SUCURSALES, null, COL_SUCURSAL_ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+
+        Sucursal sucursal = null;
+        if (cursor.moveToFirst()) {
+            sucursal = cursorToSucursal(cursor);
+        }
+
+        cursor.close();
+        db.close();
+        return sucursal;
+    }
+
+    public List<Sucursal> obtenerTodasSucursales() {
+        List<Sucursal> sucursales = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_SUCURSALES, null, null, null, null, null, COL_SUCURSAL_NOMBRE + " ASC");
+
+        if (cursor.moveToFirst()) {
+            do {
+                sucursales.add(cursorToSucursal(cursor));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return sucursales;
+    }
+
+    private Sucursal cursorToSucursal(Cursor cursor) {
+        Sucursal sucursal = new Sucursal();
+
+        int idIndex = cursor.getColumnIndex(COL_SUCURSAL_ID);
+        int empresaIdIndex = cursor.getColumnIndex(COL_SUCURSAL_EMPRESA_ID);
+        int nombreIndex = cursor.getColumnIndex(COL_SUCURSAL_NOMBRE);
+        int direccionIndex = cursor.getColumnIndex(COL_SUCURSAL_DIRECCION);
+        int ciudadIndex = cursor.getColumnIndex(COL_SUCURSAL_CIUDAD);
+        int latitudIndex = cursor.getColumnIndex(COL_SUCURSAL_LATITUD);
+        int longitudIndex = cursor.getColumnIndex(COL_SUCURSAL_LONGITUD);
+        int departamentoIndex = cursor.getColumnIndex(COL_SUCURSAL_DEPARTAMENTO);
+        int telefonoIndex = cursor.getColumnIndex(COL_SUCURSAL_TELEFONO);
+        int createdAtIndex = cursor.getColumnIndex(COL_SUCURSAL_CREATED_AT);
+        int updatedAtIndex = cursor.getColumnIndex(COL_SUCURSAL_UPDATED_AT);
+        int syncStatusIndex = cursor.getColumnIndex(COL_SUCURSAL_SYNC_STATUS);
+        int serverIdIndex = cursor.getColumnIndex(COL_SUCURSAL_SERVER_ID);
+
+        if (idIndex >= 0) sucursal.setId(cursor.getInt(idIndex));
+        if (empresaIdIndex >= 0 && !cursor.isNull(empresaIdIndex)) {
+            sucursal.setEmpresaId(cursor.getInt(empresaIdIndex));
+        }
+        if (nombreIndex >= 0) sucursal.setNombre(cursor.getString(nombreIndex));
+        if (direccionIndex >= 0) sucursal.setDireccion(cursor.getString(direccionIndex));
+        if (ciudadIndex >= 0) sucursal.setCiudad(cursor.getString(ciudadIndex));
+        if (latitudIndex >= 0 && !cursor.isNull(latitudIndex)) {
+            sucursal.setLatitud(cursor.getDouble(latitudIndex));
+        }
+        if (longitudIndex >= 0 && !cursor.isNull(longitudIndex)) {
+            sucursal.setLongitud(cursor.getDouble(longitudIndex));
+        }
+        if (departamentoIndex >= 0) sucursal.setDepartamento(cursor.getString(departamentoIndex));
+        if (telefonoIndex >= 0) sucursal.setTelefono(cursor.getString(telefonoIndex));
+        if (createdAtIndex >= 0) sucursal.setCreatedAt(cursor.getString(createdAtIndex));
+        if (updatedAtIndex >= 0) sucursal.setUpdatedAt(cursor.getString(updatedAtIndex));
+        if (syncStatusIndex >= 0) sucursal.setSyncStatus(cursor.getString(syncStatusIndex));
+        if (serverIdIndex >= 0 && !cursor.isNull(serverIdIndex)) {
+            sucursal.setServerId(cursor.getInt(serverIdIndex));
+        }
+
+        return sucursal;
     }
 
     // Clase auxiliar para SyncQueue

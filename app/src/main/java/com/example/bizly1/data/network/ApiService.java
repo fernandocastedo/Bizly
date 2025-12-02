@@ -3,6 +3,7 @@ package com.example.bizly1.data.network;
 import com.example.bizly1.models.Cliente;
 import com.example.bizly1.models.Insumo;
 import com.example.bizly1.models.ProductoVenta;
+import com.example.bizly1.models.Sucursal;
 import com.example.bizly1.models.Venta;
 
 import java.util.List;
@@ -92,5 +93,21 @@ public interface ApiService {
     
     @DELETE("api/Ventas/{id}")
     Call<Void> eliminarVenta(@Path("id") int id);
+
+    // ==================== ENDPOINTS SUCURSALES ====================
+    @GET("api/Sucursales")
+    Call<List<Sucursal>> obtenerTodasSucursales();
+
+    @GET("api/Sucursales/{id}")
+    Call<Sucursal> obtenerSucursal(@Path("id") int id);
+
+    @POST("api/Sucursales")
+    Call<Sucursal> crearSucursal(@Body Sucursal sucursal);
+
+    @PUT("api/Sucursales/{id}")
+    Call<Sucursal> actualizarSucursal(@Path("id") int id, @Body Sucursal sucursal);
+
+    @DELETE("api/Sucursales/{id}")
+    Call<Void> eliminarSucursal(@Path("id") int id);
 }
 

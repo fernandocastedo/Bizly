@@ -5,6 +5,8 @@
     <!-- Permisos -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
@@ -62,6 +64,20 @@
             android:name=".ventas.PedidosPendientesActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
+            
+        <activity
+            android:name=".sucursales.SucursalesActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+            
+        <activity
+            android:name=".sucursales.SucursalFormActivity"
+            android:exported="false"
+            android:parentActivityName=".sucursales.SucursalesActivity" />
+            
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/api_key" />
     </application>
 
 </manifest>
