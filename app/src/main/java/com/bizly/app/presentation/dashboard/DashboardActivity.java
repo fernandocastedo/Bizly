@@ -6,9 +6,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.List;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -46,8 +50,12 @@ public class DashboardActivity extends AppCompatActivity {
     private MaterialCardView ventasCard;
     private MaterialCardView trabajadoresCard;
     private CircularProgressIndicator progressIndicator;
+    private AutoCompleteTextView sucursalAutoComplete;
+    private com.google.android.material.textfield.TextInputLayout sucursalSpinnerLayout;
     
     private int usuarioId;
+    private List<com.bizly.app.domain.model.Sucursal> sucursalesList = new ArrayList<>();
+    private ArrayAdapter<String> sucursalAdapter;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +91,9 @@ public class DashboardActivity extends AppCompatActivity {
         // Configurar toolbar
         setupToolbar();
         
+        // Configurar selector de sucursal
+        setupSucursalSelector();
+        
         // Configurar listeners
         setupListeners();
         
@@ -91,6 +102,38 @@ public class DashboardActivity extends AppCompatActivity {
         
         // Cargar datos
         viewModel.cargarDatos(usuarioId);
+    }
+    
+    private void setupSucursalSelector() {
+        // Crear lista de opciones (incluyendo "Todas")
+        List<String> opciones = new ArrayList<>();
+        opciones.add("Todas las sucursales");
+        
+        sucursalAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, opciones);
+        sucursalAutoComplete.setAdapter(sucursalAdapter);
+        sucursalAutoComplete.setThreshold(1); // Mostrar opciones después de 1 carácter
+        sucursalAutoComplete.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                sucursalAutoComplete.showDropDown();
+            }
+        });
+        sucursalAutoComplete.setOnClickListener(v -> {
+            sucursalAutoComplete.showDropDown();
+        });
+        sucursalAutoComplete.setText("Todas las sucursales", false);
+        
+        // Listener para cuando se selecciona una sucursal
+        sucursalAutoComplete.setOnItemClickListener((parent, view, position, id) -> {
+            if (position == 0) {
+                // "Todas las sucursales"
+                viewModel.seleccionarSucursal(null);
+            } else if (position > 0 && position <= sucursalesList.size()) {
+                // Sucursal específica
+                com.bizly.app.domain.model.Sucursal sucursal = sucursalesList.get(position - 1);
+                viewModel.seleccionarSucursal(sucursal);
+                Toast.makeText(this, "Sucursal seleccionada: " + sucursal.getNombre(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     
     private void initViews() {
@@ -107,6 +150,8 @@ public class DashboardActivity extends AppCompatActivity {
         ventasCard = findViewById(R.id.ventasCard);
         trabajadoresCard = findViewById(R.id.trabajadoresCard);
         progressIndicator = findViewById(R.id.progressIndicator);
+        sucursalAutoComplete = findViewById(R.id.sucursalAutoComplete);
+        sucursalSpinnerLayout = findViewById(R.id.sucursalSpinnerLayout);
     }
     
     private void setupToolbar() {
@@ -136,8 +181,20 @@ public class DashboardActivity extends AppCompatActivity {
         });
         
         trabajadoresCard.setOnClickListener(v -> {
-            Toast.makeText(this, "Módulo de Trabajadores próximamente", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, com.bizly.app.presentation.trabajadores.TrabajadoresActivity.class);
+            intent.putExtra("usuario_id", usuarioId);
+            startActivity(intent);
         });
+        
+        // Card de sucursales
+        MaterialCardView sucursalesCard = findViewById(R.id.sucursalesCard);
+        if (sucursalesCard != null) {
+            sucursalesCard.setOnClickListener(v -> {
+                Intent intent = new Intent(this, com.bizly.app.presentation.sucursales.SucursalesActivity.class);
+                intent.putExtra("usuario_id", usuarioId);
+                startActivity(intent);
+            });
+        }
     }
     
     private void observeViewModel() {
@@ -171,12 +228,46 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
         
+        // Observar sucursales
+        viewModel.getSucursales().observe(this, sucursales -> {
+            if (sucursales != null) {
+                sucursalesList = sucursales;
+                updateSucursalSelector();
+            }
+        });
+        
+        // Observar sucursal seleccionada
+        viewModel.getSucursalSeleccionada().observe(this, sucursal -> {
+            // La sucursal seleccionada se puede usar para filtrar datos en otras pantallas
+            // Por ahora solo la guardamos en el ViewModel
+        });
+        
         // Observar estado
         viewModel.getDashboardState().observe(this, state -> {
             if (state != null && state.isDataLoaded()) {
                 // Datos cargados exitosamente
             }
         });
+    }
+    
+    private void updateSucursalSelector() {
+        List<String> opciones = new ArrayList<>();
+        opciones.add("Todas las sucursales");
+        
+        for (com.bizly.app.domain.model.Sucursal sucursal : sucursalesList) {
+            opciones.add(sucursal.getNombre());
+        }
+        
+        sucursalAdapter.clear();
+        sucursalAdapter.addAll(opciones);
+        sucursalAdapter.notifyDataSetChanged();
+        
+        // Si hay sucursales, seleccionar la primera por defecto
+        if (!sucursalesList.isEmpty()) {
+            com.bizly.app.domain.model.Sucursal primeraSucursal = sucursalesList.get(0);
+            sucursalAutoComplete.setText(primeraSucursal.getNombre(), false);
+            viewModel.seleccionarSucursal(primeraSucursal);
+        }
     }
     
     private void updateUsuarioInfo(Usuario usuario) {
@@ -215,6 +306,16 @@ public class DashboardActivity extends AppCompatActivity {
             } catch (Exception e) {
                 // Si falla, mantener la imagen por defecto
             }
+        }
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Recargar datos cuando la actividad vuelve a estar visible
+        // Esto asegura que los datos estén actualizados si se hicieron cambios en otra pantalla
+        if (usuarioId > 0) {
+            viewModel.recargarDatos();
         }
     }
     

@@ -135,6 +135,14 @@ public class RegisterActivity extends AppCompatActivity {
         empresaRubroInputLayout = findViewById(R.id.empresaRubroInputLayout);
         empresaDescripcionInputLayout = findViewById(R.id.empresaDescripcionInputLayout);
         empresaMargenInputLayout = findViewById(R.id.empresaMargenInputLayout);
+        
+        // Nuevos campos de dirección
+        TextInputEditText empresaDireccionEditText = findViewById(R.id.empresaDireccionEditText);
+        TextInputEditText empresaCiudadEditText = findViewById(R.id.empresaCiudadEditText);
+        TextInputEditText empresaDepartamentoEditText = findViewById(R.id.empresaDepartamentoEditText);
+        TextInputEditText empresaTelefonoEditText = findViewById(R.id.empresaTelefonoEditText);
+        TextInputLayout empresaDireccionInputLayout = findViewById(R.id.empresaDireccionInputLayout);
+        TextInputLayout empresaCiudadInputLayout = findViewById(R.id.empresaCiudadInputLayout);
         logoImageView = findViewById(R.id.logoImageView);
         selectLogoButton = findViewById(R.id.selectLogoButton);
         continueToStep2Button = findViewById(R.id.continueToStep2Button);
@@ -162,6 +170,19 @@ public class RegisterActivity extends AppCompatActivity {
             String descripcion = empresaDescripcionEditText.getText() != null ? empresaDescripcionEditText.getText().toString() : "";
             String margenStr = empresaMargenEditText.getText() != null ? empresaMargenEditText.getText().toString() : "";
             
+            // Obtener campos de dirección
+            TextInputEditText empresaDireccionEditText = findViewById(R.id.empresaDireccionEditText);
+            TextInputEditText empresaCiudadEditText = findViewById(R.id.empresaCiudadEditText);
+            TextInputEditText empresaDepartamentoEditText = findViewById(R.id.empresaDepartamentoEditText);
+            TextInputEditText empresaTelefonoEditText = findViewById(R.id.empresaTelefonoEditText);
+            TextInputLayout empresaDireccionInputLayout = findViewById(R.id.empresaDireccionInputLayout);
+            TextInputLayout empresaCiudadInputLayout = findViewById(R.id.empresaCiudadInputLayout);
+            
+            String direccion = empresaDireccionEditText.getText() != null ? empresaDireccionEditText.getText().toString() : "";
+            String ciudad = empresaCiudadEditText.getText() != null ? empresaCiudadEditText.getText().toString() : "";
+            String departamento = empresaDepartamentoEditText.getText() != null ? empresaDepartamentoEditText.getText().toString() : "";
+            String telefono = empresaTelefonoEditText.getText() != null ? empresaTelefonoEditText.getText().toString() : "";
+            
             // Limpiar errores previos
             clearStep1Errors();
             
@@ -173,6 +194,16 @@ public class RegisterActivity extends AppCompatActivity {
             
             if (TextUtils.isEmpty(rubro)) {
                 empresaRubroInputLayout.setError("El rubro es requerido");
+                return;
+            }
+            
+            if (TextUtils.isEmpty(direccion)) {
+                empresaDireccionInputLayout.setError("La dirección es requerida");
+                return;
+            }
+            
+            if (TextUtils.isEmpty(ciudad)) {
+                empresaCiudadInputLayout.setError("La ciudad es requerida");
                 return;
             }
             
@@ -190,8 +221,9 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
             
-            // Registrar empresa y avanzar al paso 2
-            viewModel.registrarEmpresa(nombre, rubro, descripcion, margenGanancia, logoPath);
+            // Registrar empresa (con creación automática de sucursal) y avanzar al paso 2
+            viewModel.registrarEmpresa(nombre, rubro, descripcion, margenGanancia, logoPath,
+                                      direccion, ciudad, departamento, telefono);
         });
         
         // Botón registrar usuario (paso 2)
@@ -279,10 +311,17 @@ public class RegisterActivity extends AppCompatActivity {
                 Integer currentStep = viewModel.getCurrentStep().getValue();
                 if (currentStep != null && currentStep == 1) {
                     // Errores del paso 1
+                    TextInputLayout empresaDireccionInputLayout = findViewById(R.id.empresaDireccionInputLayout);
+                    TextInputLayout empresaCiudadInputLayout = findViewById(R.id.empresaCiudadInputLayout);
+                    
                     if (errorMessage.contains("nombre") || errorMessage.contains("Nombre")) {
                         empresaNombreInputLayout.setError(errorMessage);
                     } else if (errorMessage.contains("rubro") || errorMessage.contains("Rubro")) {
                         empresaRubroInputLayout.setError(errorMessage);
+                    } else if (errorMessage.contains("dirección") || errorMessage.contains("Dirección")) {
+                        if (empresaDireccionInputLayout != null) empresaDireccionInputLayout.setError(errorMessage);
+                    } else if (errorMessage.contains("ciudad") || errorMessage.contains("Ciudad")) {
+                        if (empresaCiudadInputLayout != null) empresaCiudadInputLayout.setError(errorMessage);
                     } else if (errorMessage.contains("margen") || errorMessage.contains("Margen")) {
                         empresaMargenInputLayout.setError(errorMessage);
                     }
@@ -374,6 +413,10 @@ public class RegisterActivity extends AppCompatActivity {
         empresaRubroInputLayout.setError(null);
         empresaDescripcionInputLayout.setError(null);
         empresaMargenInputLayout.setError(null);
+        TextInputLayout empresaDireccionInputLayout = findViewById(R.id.empresaDireccionInputLayout);
+        TextInputLayout empresaCiudadInputLayout = findViewById(R.id.empresaCiudadInputLayout);
+        if (empresaDireccionInputLayout != null) empresaDireccionInputLayout.setError(null);
+        if (empresaCiudadInputLayout != null) empresaCiudadInputLayout.setError(null);
     }
     
     private void clearStep2Errors() {

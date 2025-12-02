@@ -42,15 +42,20 @@ public class RegisterViewModel extends AndroidViewModel {
     }
     
     /**
-     * Paso 1: Registra la empresa
+     * Paso 1: Registra la empresa y crea automáticamente la primera sucursal
      * @param nombre Nombre de la empresa
      * @param rubro Rubro de la empresa
      * @param descripcion Descripción de la empresa
      * @param margenGanancia Margen de ganancia
      * @param logoUrl URL o path del logo (puede ser null)
+     * @param direccion Dirección de la empresa (para crear sucursal automática)
+     * @param ciudad Ciudad de la empresa (para crear sucursal automática)
+     * @param departamento Departamento de la empresa (opcional)
+     * @param telefono Teléfono de la empresa (opcional)
      */
     public void registrarEmpresa(String nombre, String rubro, String descripcion, 
-                                  double margenGanancia, String logoUrl) {
+                                  double margenGanancia, String logoUrl,
+                                  String direccion, String ciudad, String departamento, String telefono) {
         // Validar campos
         if (nombre == null || nombre.trim().isEmpty()) {
             errorMessage.postValue("El nombre de la empresa es requerido");
@@ -64,6 +69,16 @@ public class RegisterViewModel extends AndroidViewModel {
         
         if (margenGanancia < 0) {
             errorMessage.postValue("El margen de ganancia debe ser un valor positivo");
+            return;
+        }
+        
+        if (direccion == null || direccion.trim().isEmpty()) {
+            errorMessage.postValue("La dirección es requerida");
+            return;
+        }
+        
+        if (ciudad == null || ciudad.trim().isEmpty()) {
+            errorMessage.postValue("La ciudad es requerida");
             return;
         }
         
@@ -82,7 +97,12 @@ public class RegisterViewModel extends AndroidViewModel {
                 empresa.setMargenGanancia(margenGanancia);
                 empresa.setLogoUrl(logoUrl);
                 
-                Empresa empresaCreada = registrarEmprendimientoUseCase.ejecutar(empresa);
+                // Registrar empresa y crear automáticamente la primera sucursal
+                Empresa empresaCreada = registrarEmprendimientoUseCase.ejecutar(
+                    empresa, direccion.trim(), ciudad.trim(), 
+                    departamento != null ? departamento.trim() : null,
+                    telefono != null ? telefono.trim() : null
+                );
                 
                 // Guardar empresa temporal para el paso 2
                 this.empresaTemporal = empresaCreada;

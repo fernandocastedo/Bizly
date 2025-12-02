@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton loginButton;
     private MaterialButton registerButton;
     private CircularProgressIndicator progressIndicator;
+    private boolean isNavigating = false; // Flag para evitar navegación duplicada
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,11 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         
-        // Poblar base de datos con datos de prueba (solo en desarrollo)
+        // Vaciar y poblar base de datos con datos de prueba (solo en desarrollo)
+        // Para resetear las pruebas, descomenta la siguiente línea:
+        // DatabaseSeeder seeder = new DatabaseSeeder(this);
+        // seeder.clearDatabase();
+        
         DatabaseSeeder seeder = new DatabaseSeeder(this);
         seeder.seedDatabase();
         
@@ -78,6 +83,17 @@ public class MainActivity extends AppCompatActivity {
     
     private void setupListeners() {
         loginButton.setOnClickListener(v -> {
+            // Verificar si ya está en proceso de carga
+            Boolean isLoading = viewModel.getIsLoading().getValue();
+            if (isLoading != null && isLoading) {
+                return; // Ya está procesando, ignorar clic
+            }
+            
+            // Verificar si ya se está navegando
+            if (isNavigating) {
+                return; // Ya se está navegando, ignorar clic
+            }
+            
             String email = emailEditText.getText() != null ? emailEditText.getText().toString() : "";
             String password = passwordEditText.getText() != null ? passwordEditText.getText().toString() : "";
             
@@ -95,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             
-            // Iniciar sesión
+            // Iniciar sesión (el botón se deshabilitará cuando isLoading cambie a true)
             viewModel.iniciarSesion(email, password);
         });
         
@@ -130,6 +146,9 @@ public class MainActivity extends AppCompatActivity {
                            errorMessage.contains("password") || errorMessage.contains("Password")) {
                     passwordInputLayout.setError(errorMessage);
                 }
+                
+                // Rehabilitar botón en caso de error
+                loginButton.setEnabled(true);
             }
         });
         
@@ -137,37 +156,43 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getLoginState().observe(this, state -> {
             if (state != null) {
                 if (state.isLoginSuccess()) {
-                    // Login exitoso
-                    handleLoginSuccess();
+                    // Login exitoso - la navegación se maneja en usuarioAutenticado
                 } else if (state.isError()) {
                     // Error ya manejado por errorMessage
                     clearErrors();
+                    // Rehabilitar botón en caso de error
+                    loginButton.setEnabled(true);
                 }
             }
         });
         
-        // Observar usuario autenticado
+        // Observar usuario autenticado (único punto de navegación)
         viewModel.getUsuarioAutenticado().observe(this, usuario -> {
-            if (usuario != null) {
+            if (usuario != null && !isNavigating) {
                 handleLoginSuccess(usuario);
             }
         });
     }
     
-    private void handleLoginSuccess() {
-        Usuario usuario = viewModel.getUsuarioAutenticado().getValue();
-        if (usuario != null) {
-            handleLoginSuccess(usuario);
-        }
-    }
-    
     private void handleLoginSuccess(Usuario usuario) {
+        if (isNavigating) {
+            return; // Ya se está navegando, evitar duplicados
+        }
+        
+        isNavigating = true;
         Toast.makeText(this, "¡Bienvenido " + usuario.getNombre() + "!", Toast.LENGTH_SHORT).show();
         // Navegar a DashboardActivity
         Intent intent = new Intent(this, com.bizly.app.presentation.dashboard.DashboardActivity.class);
         intent.putExtra("usuario_id", usuario.getId());
         startActivity(intent);
         finish();
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Resetear flag de navegación cuando se vuelve a la actividad
+        isNavigating = false;
     }
     
     private void clearErrors() {

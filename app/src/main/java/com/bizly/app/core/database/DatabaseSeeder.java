@@ -86,15 +86,32 @@ public class DatabaseSeeder {
     
     /**
      * Limpia todos los datos de prueba (útil para resetear)
+     * Elimina completamente la base de datos
      */
     public void clearDatabase() {
         executor.execute(() -> {
             try {
-                // En desarrollo, se puede usar fallbackToDestructiveMigration
-                // o eliminar la base de datos manualmente
-                context.deleteDatabase("bizly_database");
+                // Cerrar la instancia actual si existe
+                AppDatabase db = DatabaseHelper.getDatabase(context);
+                if (db != null && db.isOpen()) {
+                    db.close();
+                }
+                
+                // Resetear la instancia singleton primero
+                DatabaseHelper.resetInstance();
+                
+                // Eliminar la base de datos
+                boolean deleted = context.deleteDatabase("bizly_database");
+                
+                handler.post(() -> {
+                    // Notificar que se completó
+                    android.util.Log.d("DatabaseSeeder", "Base de datos eliminada: " + deleted);
+                });
             } catch (Exception e) {
                 e.printStackTrace();
+                handler.post(() -> {
+                    android.util.Log.e("DatabaseSeeder", "Error al eliminar base de datos: " + e.getMessage());
+                });
             }
         });
     }

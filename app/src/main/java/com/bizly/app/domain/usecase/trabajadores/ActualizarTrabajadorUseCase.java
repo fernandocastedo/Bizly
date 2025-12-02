@@ -7,24 +7,29 @@ import com.bizly.app.data.repository.impl.TrabajadorRepositoryLocal;
 import com.bizly.app.domain.model.Trabajador;
 
 /**
- * Caso de uso para registrar un nuevo trabajador
- * RF-46
+ * Caso de uso para actualizar un trabajador existente
+ * RF-47
  */
-public class RegistrarTrabajadorUseCase {
+public class ActualizarTrabajadorUseCase {
     
     private final TrabajadorRepository trabajadorRepository;
     
-    public RegistrarTrabajadorUseCase(Context context) {
+    public ActualizarTrabajadorUseCase(Context context) {
         this.trabajadorRepository = new TrabajadorRepositoryLocal(context);
     }
     
     /**
-     * Registra un nuevo trabajador
-     * @param trabajador Trabajador a registrar
-     * @return Trabajador registrado con ID asignado
+     * Actualiza un trabajador existente
+     * @param trabajador Trabajador con los datos actualizados
+     * @return true si se actualizó correctamente
      * @throws AppException si hay errores de validación
      */
-    public Trabajador ejecutar(Trabajador trabajador) throws AppException {
+    public boolean ejecutar(Trabajador trabajador) throws AppException {
+        // Validar que el trabajador tenga ID
+        if (trabajador.getId() <= 0) {
+            throw new AppException("El trabajador debe tener un ID válido");
+        }
+        
         // Validar nombre
         if (trabajador.getNombre() == null || trabajador.getNombre().trim().isEmpty()) {
             throw new AppException("El nombre del trabajador es requerido");
@@ -51,8 +56,9 @@ public class RegistrarTrabajadorUseCase {
             throw new AppException("El trabajador debe pertenecer a una sucursal");
         }
         
-        // Registrar trabajador
-        return trabajadorRepository.registrarTrabajador(trabajador);
+        // Actualizar trabajador
+        return trabajadorRepository.actualizarTrabajador(trabajador);
     }
 }
+
 

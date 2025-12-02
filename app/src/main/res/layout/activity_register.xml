@@ -134,6 +134,98 @@
                         android:paddingEnd="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Campo de dirección -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/empresaDireccionInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Dirección"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/empresaDireccionEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPostalAddress"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo de ciudad -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/empresaCiudadInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Ciudad"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/empresaCiudadEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo de departamento -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/empresaDepartamentoInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Departamento (opcional)"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/empresaDepartamentoEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo de teléfono -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/empresaTelefonoInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Teléfono (opcional)"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/empresaTelefonoEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <!-- Campo de margen de ganancia -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/empresaMargenInputLayout"

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".presentation.trabajadores.CrearTrabajadorActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/primary_color"
+            app:title="Crear Trabajador"
+            app:titleTextColor="@android:color/white"
+            app:navigationIcon="@android:drawable/ic_menu_revert" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Campo de nombre -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/nombreInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="Nombre completo"
+                        app:boxStrokeColor="@color/primary_color"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@color/primary_color"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nombreEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:minHeight="56dp"
+                            android:textSize="16sp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Campo de cargo -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cargoInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="Cargo"
+                        app:boxStrokeColor="@color/primary_color"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@color/primary_color"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/cargoEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:minHeight="56dp"
+                            android:textSize="16sp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Selector de sucursal -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/sucursalInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="Sucursal *"
+                        app:boxStrokeColor="@color/primary_color"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@color/primary_color"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/sucursalAutoComplete"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:clickable="true"
+                            android:text="Sin sucursal"
+                            android:textSize="16sp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Campo de sueldo mensual -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/sueldoInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="Sueldo mensual"
+                        app:boxStrokeColor="@color/primary_color"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@color/primary_color"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/sueldoEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:minHeight="56dp"
+                            android:textSize="16sp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Selector de tipo de gasto -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tipoGastoInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:hint="Tipo de gasto"
+                        app:boxStrokeColor="@color/primary_color"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@color/primary_color"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/tipoGastoAutoComplete"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:clickable="true"
+                            android:text="Fijo"
+                            android:textSize="16sp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Progress Indicator -->
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/progressIndicator"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone"
+                        app:indicatorColor="@color/primary_color" />
+
+                    <!-- Botón de guardar -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/guardarButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="Registrar Trabajador"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/primary_color"
+                        app:cornerRadius="12dp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

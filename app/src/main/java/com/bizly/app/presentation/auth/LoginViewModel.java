@@ -38,18 +38,28 @@ public class LoginViewModel extends AndroidViewModel {
      * @param password Contraseña
      */
     public void iniciarSesion(String email, String password) {
-        // Validar campos vacíos
+        // Verificar si ya está en proceso de carga
+        Boolean isCurrentlyLoading = isLoading.getValue();
+        if (isCurrentlyLoading != null && isCurrentlyLoading) {
+            return; // Ya está procesando, ignorar llamada
+        }
+        
+        // Limpiar estados previos
+        errorMessage.postValue("");
+        usuarioAutenticado.postValue(null);
+        
+        // Validar campos vacíos ANTES de establecer isLoading
         if (email == null || email.trim().isEmpty()) {
             errorMessage.postValue("El email es requerido");
-            return;
+            return; // Retornar sin establecer isLoading
         }
         
         if (password == null || password.isEmpty()) {
             errorMessage.postValue("La contraseña es requerida");
-            return;
+            return; // Retornar sin establecer isLoading
         }
         
-        // Mostrar loading
+        // Solo establecer loading si pasó las validaciones
         isLoading.postValue(true);
         loginState.postValue(new LoginState(BaseState.STATE_LOADING));
         

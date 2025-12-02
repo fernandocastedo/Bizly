@@ -27,5 +27,15 @@ public class DatabaseHelper {
         }
         return instance;
     }
+    
+    /**
+     * Resetea la instancia singleton (útil para testing o resetear la BD)
+     */
+    public static synchronized void resetInstance() {
+        if (instance != null && instance.isOpen()) {
+            instance.close();
+        }
+        instance = null;
+    }
 }
 

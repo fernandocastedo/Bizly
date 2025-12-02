@@ -5,11 +5,16 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import com.bizly.app.core.exception.AppException;
 import com.bizly.app.data.repository.EmpresaRepository;
+import com.bizly.app.data.repository.SucursalRepository;
 import com.bizly.app.data.repository.UsuarioRepository;
 import com.bizly.app.data.repository.impl.EmpresaRepositoryLocal;
+import com.bizly.app.data.repository.impl.SucursalRepositoryLocal;
 import com.bizly.app.data.repository.impl.UsuarioRepositoryLocal;
 import com.bizly.app.domain.model.Empresa;
+import com.bizly.app.domain.model.Sucursal;
 import com.bizly.app.domain.model.Usuario;
+import java.util.ArrayList;
+import java.util.List;
 import com.bizly.app.presentation.base.BaseState;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,6 +27,7 @@ public class DashboardViewModel extends AndroidViewModel {
     
     private final EmpresaRepository empresaRepository;
     private final UsuarioRepository usuarioRepository;
+    private final SucursalRepository sucursalRepository;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     
     // LiveData para el estado
@@ -30,16 +36,21 @@ public class DashboardViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private MutableLiveData<Empresa> empresa = new MutableLiveData<>();
     private MutableLiveData<Usuario> usuario = new MutableLiveData<>();
+    private MutableLiveData<List<Sucursal>> sucursales = new MutableLiveData<>();
+    private MutableLiveData<Sucursal> sucursalSeleccionada = new MutableLiveData<>();
     
     // Usuario actual (se establece desde la Activity)
     private int usuarioId;
+    private int empresaId;
     
     public DashboardViewModel(Application application) {
         super(application);
         this.empresaRepository = new EmpresaRepositoryLocal(application);
         this.usuarioRepository = new UsuarioRepositoryLocal(application);
+        this.sucursalRepository = new SucursalRepositoryLocal(application);
         dashboardState.setValue(new DashboardState(BaseState.STATE_IDLE));
         isLoading.setValue(false);
+        sucursales.setValue(new ArrayList<>());
     }
     
     /**
@@ -80,10 +91,15 @@ public class DashboardViewModel extends AndroidViewModel {
                 
                 // Cargar empresa
                 if (usuarioActual.getEmpresaId() > 0) {
-                    Empresa empresaActual = empresaRepository.obtenerEmpresaPorId(usuarioActual.getEmpresaId());
+                    empresaId = usuarioActual.getEmpresaId();
+                    Empresa empresaActual = empresaRepository.obtenerEmpresaPorId(empresaId);
                     if (empresaActual != null) {
                         empresa.postValue(empresaActual);
                     }
+                    
+                    // Cargar sucursales
+                    List<Sucursal> sucursalesList = sucursalRepository.obtenerSucursalesPorEmpresa(empresaId);
+                    sucursales.postValue(sucursalesList != null ? sucursalesList : new ArrayList<>());
                 }
                 
                 // Datos cargados exitosamente
@@ -125,6 +141,22 @@ public class DashboardViewModel extends AndroidViewModel {
     
     public MutableLiveData<Usuario> getUsuario() {
         return usuario;
+    }
+    
+    public MutableLiveData<List<Sucursal>> getSucursales() {
+        return sucursales;
+    }
+    
+    public MutableLiveData<Sucursal> getSucursalSeleccionada() {
+        return sucursalSeleccionada;
+    }
+    
+    /**
+     * Establece la sucursal seleccionada
+     * @param sucursal Sucursal seleccionada (null para ninguna)
+     */
+    public void seleccionarSucursal(Sucursal sucursal) {
+        sucursalSeleccionada.postValue(sucursal);
     }
     
     @Override

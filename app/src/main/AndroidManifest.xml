@@ -37,6 +37,26 @@
             android:name="com.bizly.app.presentation.emprendimiento.EmprendimientoActivity"
             android:exported="false"
             android:parentActivityName="com.bizly.app.presentation.dashboard.DashboardActivity" />
+        <activity
+            android:name="com.bizly.app.presentation.sucursales.SucursalesActivity"
+            android:exported="false"
+            android:parentActivityName="com.bizly.app.presentation.dashboard.DashboardActivity" />
+        <activity
+            android:name="com.bizly.app.presentation.sucursales.RegistrarSucursalActivity"
+            android:exported="false"
+            android:parentActivityName="com.bizly.app.presentation.sucursales.SucursalesActivity" />
+        <activity
+            android:name="com.bizly.app.presentation.trabajadores.TrabajadoresActivity"
+            android:exported="false"
+            android:parentActivityName="com.bizly.app.presentation.dashboard.DashboardActivity" />
+        <activity
+            android:name="com.bizly.app.presentation.trabajadores.CrearTrabajadorActivity"
+            android:exported="false"
+            android:parentActivityName="com.bizly.app.presentation.trabajadores.TrabajadoresActivity" />
+        <activity
+            android:name="com.bizly.app.presentation.trabajadores.EditarTrabajadorActivity"
+            android:exported="false"
+            android:parentActivityName="com.bizly.app.presentation.trabajadores.TrabajadoresActivity" />
     </application>
 
 </manifest>

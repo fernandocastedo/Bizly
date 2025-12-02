@@ -41,6 +41,9 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     
+    // RecyclerView
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    
     // Room - Usando annotationProcessor para Java (no kapt que es para Kotlin)
     implementation(libs.room.runtime)
     annotationProcessor(libs.room.compiler)
