@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="metodos_pago">
+        <item>Efectivo</item>
+        <item>QR</item>
+        <item>Transferencia</item>
+        <item>Tarjeta</item>
+    </string-array>
+
+    <string-array name="estados_pago">
+        <item>Pagado</item>
+        <item>Pendiente</item>
+    </string-array>
+</resources>
+

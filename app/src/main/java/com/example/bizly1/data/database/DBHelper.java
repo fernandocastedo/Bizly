@@ -6,9 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.bizly1.models.Cliente;
 import com.example.bizly1.models.Insumo;
 import com.example.bizly1.models.ProductoVenta;
 import com.example.bizly1.models.ProductoVentaInsumo;
+import com.example.bizly1.models.Venta;
+import com.example.bizly1.models.VentaProducto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +19,15 @@ import java.util.List;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "bizlyDB.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // Tablas
     private static final String TABLE_INSUMOS = "insumos";
     private static final String TABLE_PRODUCTOS_VENTA = "productos_venta";
     private static final String TABLE_PRODUCTO_VENTA_INSUMO = "producto_venta_insumo";
+    private static final String TABLE_CLIENTES = "clientes";
+    private static final String TABLE_VENTAS = "ventas";
+    private static final String TABLE_VENTA_PRODUCTO = "venta_producto";
     private static final String TABLE_SYNC_QUEUE = "sync_queue";
 
     // Columnas Insumos
@@ -59,6 +65,43 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String COL_PVI_PRODUCTO_VENTA_ID = "producto_venta_id";
     private static final String COL_PVI_INSUMO_ID = "insumo_id";
     private static final String COL_PVI_CANTIDAD_USADA = "cantidad_usada";
+
+    // Columnas Clientes
+    private static final String COL_CLIENTE_ID = "id";
+    private static final String COL_CLIENTE_EMPRESA_ID = "empresa_id";
+    private static final String COL_CLIENTE_SUCURSAL_ID = "sucursal_id";
+    private static final String COL_CLIENTE_NOMBRE = "nombre";
+    private static final String COL_CLIENTE_NIT = "nit";
+    private static final String COL_CLIENTE_TELEFONO = "telefono";
+    private static final String COL_CLIENTE_EMAIL = "email";
+    private static final String COL_CLIENTE_DIRECCION = "direccion";
+    private static final String COL_CLIENTE_CREATED_AT = "created_at";
+    private static final String COL_CLIENTE_SYNC_STATUS = "sync_status";
+    private static final String COL_CLIENTE_SERVER_ID = "server_id";
+
+    // Columnas Ventas
+    private static final String COL_VENTA_ID = "id";
+    private static final String COL_VENTA_EMPRESA_ID = "empresa_id";
+    private static final String COL_VENTA_SUCURSAL_ID = "sucursal_id";
+    private static final String COL_VENTA_USUARIO_ID = "usuario_id";
+    private static final String COL_VENTA_CLIENTE_ID = "cliente_id";
+    private static final String COL_VENTA_FECHA = "fecha";
+    private static final String COL_VENTA_METODO_PAGO = "metodo_pago";
+    private static final String COL_VENTA_TOTAL = "total";
+    private static final String COL_VENTA_ES_ENVIO = "es_envio";
+    private static final String COL_VENTA_ESTADO_PAGO = "estado_pago";
+    private static final String COL_VENTA_ESTADO_PEDIDO = "estado_pedido";
+    private static final String COL_VENTA_CREATED_AT = "created_at";
+    private static final String COL_VENTA_SYNC_STATUS = "sync_status";
+    private static final String COL_VENTA_SERVER_ID = "server_id";
+
+    // Columnas VentaProducto
+    private static final String COL_VP_ID = "id";
+    private static final String COL_VP_VENTA_ID = "venta_id";
+    private static final String COL_VP_PRODUCTO_VENTA_ID = "producto_venta_id";
+    private static final String COL_VP_CANTIDAD = "cantidad";
+    private static final String COL_VP_PRECIO_UNITARIO = "precio_unitario";
+    private static final String COL_VP_SUBTOTAL = "subtotal";
 
     // Columnas SyncQueue
     private static final String COL_SYNC_ID = "id";
@@ -124,6 +167,57 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL(createProductoVentaInsumoTable);
 
+        // Tabla Clientes
+        String createClientesTable = "CREATE TABLE " + TABLE_CLIENTES + " (" +
+                COL_CLIENTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL_CLIENTE_EMPRESA_ID + " INTEGER, " +
+                COL_CLIENTE_SUCURSAL_ID + " INTEGER, " +
+                COL_CLIENTE_NOMBRE + " TEXT NOT NULL, " +
+                COL_CLIENTE_NIT + " INTEGER, " +
+                COL_CLIENTE_TELEFONO + " TEXT, " +
+                COL_CLIENTE_EMAIL + " TEXT, " +
+                COL_CLIENTE_DIRECCION + " TEXT, " +
+                COL_CLIENTE_CREATED_AT + " TEXT, " +
+                COL_CLIENTE_SYNC_STATUS + " TEXT DEFAULT 'pending', " +
+                COL_CLIENTE_SERVER_ID + " INTEGER" +
+                ")";
+
+        db.execSQL(createClientesTable);
+
+        // Tabla Ventas
+        String createVentasTable = "CREATE TABLE " + TABLE_VENTAS + " (" +
+                COL_VENTA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL_VENTA_EMPRESA_ID + " INTEGER, " +
+                COL_VENTA_SUCURSAL_ID + " INTEGER, " +
+                COL_VENTA_USUARIO_ID + " INTEGER, " +
+                COL_VENTA_CLIENTE_ID + " INTEGER, " +
+                COL_VENTA_FECHA + " TEXT, " +
+                COL_VENTA_METODO_PAGO + " TEXT, " +
+                COL_VENTA_TOTAL + " REAL, " +
+                COL_VENTA_ES_ENVIO + " INTEGER DEFAULT 0, " +
+                COL_VENTA_ESTADO_PAGO + " TEXT DEFAULT 'pagado', " +
+                COL_VENTA_ESTADO_PEDIDO + " TEXT DEFAULT 'completado', " +
+                COL_VENTA_CREATED_AT + " TEXT, " +
+                COL_VENTA_SYNC_STATUS + " TEXT DEFAULT 'pending', " +
+                COL_VENTA_SERVER_ID + " INTEGER" +
+                ")";
+
+        db.execSQL(createVentasTable);
+
+        // Tabla VentaProducto
+        String createVentaProductoTable = "CREATE TABLE " + TABLE_VENTA_PRODUCTO + " (" +
+                COL_VP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL_VP_VENTA_ID + " INTEGER NOT NULL, " +
+                COL_VP_PRODUCTO_VENTA_ID + " INTEGER NOT NULL, " +
+                COL_VP_CANTIDAD + " REAL NOT NULL, " +
+                COL_VP_PRECIO_UNITARIO + " REAL NOT NULL, " +
+                COL_VP_SUBTOTAL + " REAL NOT NULL, " +
+                "FOREIGN KEY(" + COL_VP_VENTA_ID + ") REFERENCES " + TABLE_VENTAS + "(" + COL_VENTA_ID + ") ON DELETE CASCADE, " +
+                "FOREIGN KEY(" + COL_VP_PRODUCTO_VENTA_ID + ") REFERENCES " + TABLE_PRODUCTOS_VENTA + "(" + COL_PV_ID + ") ON DELETE CASCADE" +
+                ")";
+
+        db.execSQL(createVentaProductoTable);
+
         // Tabla SyncQueue
         String createSyncQueueTable = "CREATE TABLE " + TABLE_SYNC_QUEUE + " (" +
                 COL_SYNC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -168,6 +262,56 @@ public class DBHelper extends SQLiteOpenHelper {
                     ")";
 
             db.execSQL(createProductoVentaInsumoTable);
+        }
+        if (oldVersion < 3) {
+            // Crear nuevas tablas para ventas
+            String createClientesTable = "CREATE TABLE IF NOT EXISTS " + TABLE_CLIENTES + " (" +
+                    COL_CLIENTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COL_CLIENTE_EMPRESA_ID + " INTEGER, " +
+                    COL_CLIENTE_SUCURSAL_ID + " INTEGER, " +
+                    COL_CLIENTE_NOMBRE + " TEXT NOT NULL, " +
+                    COL_CLIENTE_NIT + " INTEGER, " +
+                    COL_CLIENTE_TELEFONO + " TEXT, " +
+                    COL_CLIENTE_EMAIL + " TEXT, " +
+                    COL_CLIENTE_DIRECCION + " TEXT, " +
+                    COL_CLIENTE_CREATED_AT + " TEXT, " +
+                    COL_CLIENTE_SYNC_STATUS + " TEXT DEFAULT 'pending', " +
+                    COL_CLIENTE_SERVER_ID + " INTEGER" +
+                    ")";
+
+            db.execSQL(createClientesTable);
+
+            String createVentasTable = "CREATE TABLE IF NOT EXISTS " + TABLE_VENTAS + " (" +
+                    COL_VENTA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COL_VENTA_EMPRESA_ID + " INTEGER, " +
+                    COL_VENTA_SUCURSAL_ID + " INTEGER, " +
+                    COL_VENTA_USUARIO_ID + " INTEGER, " +
+                    COL_VENTA_CLIENTE_ID + " INTEGER, " +
+                    COL_VENTA_FECHA + " TEXT, " +
+                    COL_VENTA_METODO_PAGO + " TEXT, " +
+                    COL_VENTA_TOTAL + " REAL, " +
+                    COL_VENTA_ES_ENVIO + " INTEGER DEFAULT 0, " +
+                    COL_VENTA_ESTADO_PAGO + " TEXT DEFAULT 'pagado', " +
+                    COL_VENTA_ESTADO_PEDIDO + " TEXT DEFAULT 'completado', " +
+                    COL_VENTA_CREATED_AT + " TEXT, " +
+                    COL_VENTA_SYNC_STATUS + " TEXT DEFAULT 'pending', " +
+                    COL_VENTA_SERVER_ID + " INTEGER" +
+                    ")";
+
+            db.execSQL(createVentasTable);
+
+            String createVentaProductoTable = "CREATE TABLE IF NOT EXISTS " + TABLE_VENTA_PRODUCTO + " (" +
+                    COL_VP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COL_VP_VENTA_ID + " INTEGER NOT NULL, " +
+                    COL_VP_PRODUCTO_VENTA_ID + " INTEGER NOT NULL, " +
+                    COL_VP_CANTIDAD + " REAL NOT NULL, " +
+                    COL_VP_PRECIO_UNITARIO + " REAL NOT NULL, " +
+                    COL_VP_SUBTOTAL + " REAL NOT NULL, " +
+                    "FOREIGN KEY(" + COL_VP_VENTA_ID + ") REFERENCES " + TABLE_VENTAS + "(" + COL_VENTA_ID + ") ON DELETE CASCADE, " +
+                    "FOREIGN KEY(" + COL_VP_PRODUCTO_VENTA_ID + ") REFERENCES " + TABLE_PRODUCTOS_VENTA + "(" + COL_PV_ID + ") ON DELETE CASCADE" +
+                    ")";
+
+            db.execSQL(createVentaProductoTable);
         }
     }
 
@@ -647,6 +791,424 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return insumos;
+    }
+
+    // ==================== MÉTODOS CRUD CLIENTES ====================
+
+    public long insertarCliente(Cliente cliente) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        if (cliente.getId() != null) {
+            values.put(COL_CLIENTE_ID, cliente.getId());
+        }
+        if (cliente.getEmpresaId() != null) {
+            values.put(COL_CLIENTE_EMPRESA_ID, cliente.getEmpresaId());
+        }
+        if (cliente.getSucursalId() != null) {
+            values.put(COL_CLIENTE_SUCURSAL_ID, cliente.getSucursalId());
+        }
+        values.put(COL_CLIENTE_NOMBRE, cliente.getNombre());
+        if (cliente.getNit() != null) {
+            values.put(COL_CLIENTE_NIT, cliente.getNit());
+        }
+        values.put(COL_CLIENTE_TELEFONO, cliente.getTelefono());
+        values.put(COL_CLIENTE_EMAIL, cliente.getEmail());
+        values.put(COL_CLIENTE_DIRECCION, cliente.getDireccion());
+        values.put(COL_CLIENTE_CREATED_AT, cliente.getCreatedAt());
+        values.put(COL_CLIENTE_SYNC_STATUS, cliente.getSyncStatus() != null ? cliente.getSyncStatus() : "pending");
+        if (cliente.getServerId() != null) {
+            values.put(COL_CLIENTE_SERVER_ID, cliente.getServerId());
+        }
+
+        long id = db.insert(TABLE_CLIENTES, null, values);
+        db.close();
+        return id;
+    }
+
+    public boolean actualizarCliente(Cliente cliente) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        if (cliente.getEmpresaId() != null) {
+            values.put(COL_CLIENTE_EMPRESA_ID, cliente.getEmpresaId());
+        }
+        if (cliente.getSucursalId() != null) {
+            values.put(COL_CLIENTE_SUCURSAL_ID, cliente.getSucursalId());
+        }
+        values.put(COL_CLIENTE_NOMBRE, cliente.getNombre());
+        if (cliente.getNit() != null) {
+            values.put(COL_CLIENTE_NIT, cliente.getNit());
+        }
+        values.put(COL_CLIENTE_TELEFONO, cliente.getTelefono());
+        values.put(COL_CLIENTE_EMAIL, cliente.getEmail());
+        values.put(COL_CLIENTE_DIRECCION, cliente.getDireccion());
+        values.put(COL_CLIENTE_SYNC_STATUS, cliente.getSyncStatus() != null ? cliente.getSyncStatus() : "pending");
+        if (cliente.getServerId() != null) {
+            values.put(COL_CLIENTE_SERVER_ID, cliente.getServerId());
+        }
+
+        int rowsAffected = db.update(TABLE_CLIENTES, values, COL_CLIENTE_ID + " = ?",
+                new String[]{String.valueOf(cliente.getId())});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+    public boolean eliminarCliente(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete(TABLE_CLIENTES, COL_CLIENTE_ID + " = ?",
+                new String[]{String.valueOf(id)});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+    public Cliente obtenerCliente(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_CLIENTES, null, COL_CLIENTE_ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+
+        Cliente cliente = null;
+        if (cursor.moveToFirst()) {
+            cliente = cursorToCliente(cursor);
+        }
+
+        cursor.close();
+        db.close();
+        return cliente;
+    }
+
+    public Cliente obtenerClientePorNit(Integer nit) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_CLIENTES, null, COL_CLIENTE_NIT + " = ?",
+                new String[]{String.valueOf(nit)}, null, null, null);
+
+        Cliente cliente = null;
+        if (cursor.moveToFirst()) {
+            cliente = cursorToCliente(cursor);
+        }
+
+        cursor.close();
+        db.close();
+        return cliente;
+    }
+
+    public List<Cliente> obtenerTodosClientes() {
+        List<Cliente> clientes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_CLIENTES, null, null, null, null, null, COL_CLIENTE_NOMBRE + " ASC");
+
+        if (cursor.moveToFirst()) {
+            do {
+                clientes.add(cursorToCliente(cursor));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return clientes;
+    }
+
+    private Cliente cursorToCliente(Cursor cursor) {
+        Cliente cliente = new Cliente();
+
+        int idIndex = cursor.getColumnIndex(COL_CLIENTE_ID);
+        int empresaIdIndex = cursor.getColumnIndex(COL_CLIENTE_EMPRESA_ID);
+        int sucursalIdIndex = cursor.getColumnIndex(COL_CLIENTE_SUCURSAL_ID);
+        int nombreIndex = cursor.getColumnIndex(COL_CLIENTE_NOMBRE);
+        int nitIndex = cursor.getColumnIndex(COL_CLIENTE_NIT);
+        int telefonoIndex = cursor.getColumnIndex(COL_CLIENTE_TELEFONO);
+        int emailIndex = cursor.getColumnIndex(COL_CLIENTE_EMAIL);
+        int direccionIndex = cursor.getColumnIndex(COL_CLIENTE_DIRECCION);
+        int createdAtIndex = cursor.getColumnIndex(COL_CLIENTE_CREATED_AT);
+        int syncStatusIndex = cursor.getColumnIndex(COL_CLIENTE_SYNC_STATUS);
+        int serverIdIndex = cursor.getColumnIndex(COL_CLIENTE_SERVER_ID);
+
+        if (idIndex >= 0) cliente.setId(cursor.getInt(idIndex));
+        if (empresaIdIndex >= 0 && !cursor.isNull(empresaIdIndex)) {
+            cliente.setEmpresaId(cursor.getInt(empresaIdIndex));
+        }
+        if (sucursalIdIndex >= 0 && !cursor.isNull(sucursalIdIndex)) {
+            cliente.setSucursalId(cursor.getInt(sucursalIdIndex));
+        }
+        if (nombreIndex >= 0) cliente.setNombre(cursor.getString(nombreIndex));
+        if (nitIndex >= 0 && !cursor.isNull(nitIndex)) {
+            cliente.setNit(cursor.getInt(nitIndex));
+        }
+        if (telefonoIndex >= 0) cliente.setTelefono(cursor.getString(telefonoIndex));
+        if (emailIndex >= 0) cliente.setEmail(cursor.getString(emailIndex));
+        if (direccionIndex >= 0) cliente.setDireccion(cursor.getString(direccionIndex));
+        if (createdAtIndex >= 0) cliente.setCreatedAt(cursor.getString(createdAtIndex));
+        if (syncStatusIndex >= 0) cliente.setSyncStatus(cursor.getString(syncStatusIndex));
+        if (serverIdIndex >= 0 && !cursor.isNull(serverIdIndex)) {
+            cliente.setServerId(cursor.getInt(serverIdIndex));
+        }
+
+        return cliente;
+    }
+
+    // ==================== MÉTODOS CRUD VENTAS ====================
+
+    public long insertarVenta(Venta venta) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        if (venta.getId() != null) {
+            values.put(COL_VENTA_ID, venta.getId());
+        }
+        if (venta.getEmpresaId() != null) {
+            values.put(COL_VENTA_EMPRESA_ID, venta.getEmpresaId());
+        }
+        if (venta.getSucursalId() != null) {
+            values.put(COL_VENTA_SUCURSAL_ID, venta.getSucursalId());
+        }
+        if (venta.getUsuarioId() != null) {
+            values.put(COL_VENTA_USUARIO_ID, venta.getUsuarioId());
+        }
+        if (venta.getClienteId() != null) {
+            values.put(COL_VENTA_CLIENTE_ID, venta.getClienteId());
+        }
+        values.put(COL_VENTA_FECHA, venta.getFecha());
+        values.put(COL_VENTA_METODO_PAGO, venta.getMetodoPago());
+        if (venta.getTotal() != null) {
+            values.put(COL_VENTA_TOTAL, venta.getTotal());
+        }
+        values.put(COL_VENTA_ES_ENVIO, venta.getEsEnvio() != null && venta.getEsEnvio() ? 1 : 0);
+        values.put(COL_VENTA_ESTADO_PAGO, venta.getEstadoPago());
+        values.put(COL_VENTA_ESTADO_PEDIDO, venta.getEstadoPedido());
+        values.put(COL_VENTA_CREATED_AT, venta.getCreatedAt());
+        values.put(COL_VENTA_SYNC_STATUS, venta.getSyncStatus() != null ? venta.getSyncStatus() : "pending");
+        if (venta.getServerId() != null) {
+            values.put(COL_VENTA_SERVER_ID, venta.getServerId());
+        }
+
+        long id = db.insert(TABLE_VENTAS, null, values);
+        db.close();
+        return id;
+    }
+
+    public boolean actualizarVenta(Venta venta) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        if (venta.getEmpresaId() != null) {
+            values.put(COL_VENTA_EMPRESA_ID, venta.getEmpresaId());
+        }
+        if (venta.getSucursalId() != null) {
+            values.put(COL_VENTA_SUCURSAL_ID, venta.getSucursalId());
+        }
+        if (venta.getUsuarioId() != null) {
+            values.put(COL_VENTA_USUARIO_ID, venta.getUsuarioId());
+        }
+        if (venta.getClienteId() != null) {
+            values.put(COL_VENTA_CLIENTE_ID, venta.getClienteId());
+        }
+        values.put(COL_VENTA_FECHA, venta.getFecha());
+        values.put(COL_VENTA_METODO_PAGO, venta.getMetodoPago());
+        if (venta.getTotal() != null) {
+            values.put(COL_VENTA_TOTAL, venta.getTotal());
+        }
+        values.put(COL_VENTA_ES_ENVIO, venta.getEsEnvio() != null && venta.getEsEnvio() ? 1 : 0);
+        values.put(COL_VENTA_ESTADO_PAGO, venta.getEstadoPago());
+        values.put(COL_VENTA_ESTADO_PEDIDO, venta.getEstadoPedido());
+        values.put(COL_VENTA_SYNC_STATUS, venta.getSyncStatus() != null ? venta.getSyncStatus() : "pending");
+        if (venta.getServerId() != null) {
+            values.put(COL_VENTA_SERVER_ID, venta.getServerId());
+        }
+
+        int rowsAffected = db.update(TABLE_VENTAS, values, COL_VENTA_ID + " = ?",
+                new String[]{String.valueOf(venta.getId())});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+    public boolean eliminarVenta(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete(TABLE_VENTAS, COL_VENTA_ID + " = ?",
+                new String[]{String.valueOf(id)});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+    public Venta obtenerVenta(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_VENTAS, null, COL_VENTA_ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+
+        Venta venta = null;
+        if (cursor.moveToFirst()) {
+            venta = cursorToVenta(cursor);
+            venta.setProductos(obtenerProductosDeVenta(id));
+            if (venta.getClienteId() != null) {
+                venta.setCliente(obtenerCliente(venta.getClienteId()));
+            }
+        }
+
+        cursor.close();
+        db.close();
+        return venta;
+    }
+
+    public List<Venta> obtenerTodasVentas() {
+        List<Venta> ventas = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_VENTAS, null, null, null, null, null, COL_VENTA_FECHA + " DESC");
+
+        if (cursor.moveToFirst()) {
+            do {
+                Venta venta = cursorToVenta(cursor);
+                venta.setProductos(obtenerProductosDeVenta(venta.getId()));
+                if (venta.getClienteId() != null) {
+                    venta.setCliente(obtenerCliente(venta.getClienteId()));
+                }
+                ventas.add(venta);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return ventas;
+    }
+
+    public List<Venta> obtenerVentasPendientes() {
+        List<Venta> ventas = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String whereClause = COL_VENTA_ESTADO_PEDIDO + " = ? OR " + COL_VENTA_ESTADO_PAGO + " = ?";
+        String[] whereArgs = new String[]{"pendiente", "pendiente"};
+        Cursor cursor = db.query(TABLE_VENTAS, null, whereClause, whereArgs, null, null, COL_VENTA_FECHA + " DESC");
+
+        if (cursor.moveToFirst()) {
+            do {
+                Venta venta = cursorToVenta(cursor);
+                venta.setProductos(obtenerProductosDeVenta(venta.getId()));
+                if (venta.getClienteId() != null) {
+                    venta.setCliente(obtenerCliente(venta.getClienteId()));
+                }
+                ventas.add(venta);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return ventas;
+    }
+
+    private Venta cursorToVenta(Cursor cursor) {
+        Venta venta = new Venta();
+
+        int idIndex = cursor.getColumnIndex(COL_VENTA_ID);
+        int empresaIdIndex = cursor.getColumnIndex(COL_VENTA_EMPRESA_ID);
+        int sucursalIdIndex = cursor.getColumnIndex(COL_VENTA_SUCURSAL_ID);
+        int usuarioIdIndex = cursor.getColumnIndex(COL_VENTA_USUARIO_ID);
+        int clienteIdIndex = cursor.getColumnIndex(COL_VENTA_CLIENTE_ID);
+        int fechaIndex = cursor.getColumnIndex(COL_VENTA_FECHA);
+        int metodoPagoIndex = cursor.getColumnIndex(COL_VENTA_METODO_PAGO);
+        int totalIndex = cursor.getColumnIndex(COL_VENTA_TOTAL);
+        int esEnvioIndex = cursor.getColumnIndex(COL_VENTA_ES_ENVIO);
+        int estadoPagoIndex = cursor.getColumnIndex(COL_VENTA_ESTADO_PAGO);
+        int estadoPedidoIndex = cursor.getColumnIndex(COL_VENTA_ESTADO_PEDIDO);
+        int createdAtIndex = cursor.getColumnIndex(COL_VENTA_CREATED_AT);
+        int syncStatusIndex = cursor.getColumnIndex(COL_VENTA_SYNC_STATUS);
+        int serverIdIndex = cursor.getColumnIndex(COL_VENTA_SERVER_ID);
+
+        if (idIndex >= 0) venta.setId(cursor.getInt(idIndex));
+        if (empresaIdIndex >= 0 && !cursor.isNull(empresaIdIndex)) {
+            venta.setEmpresaId(cursor.getInt(empresaIdIndex));
+        }
+        if (sucursalIdIndex >= 0 && !cursor.isNull(sucursalIdIndex)) {
+            venta.setSucursalId(cursor.getInt(sucursalIdIndex));
+        }
+        if (usuarioIdIndex >= 0 && !cursor.isNull(usuarioIdIndex)) {
+            venta.setUsuarioId(cursor.getInt(usuarioIdIndex));
+        }
+        if (clienteIdIndex >= 0 && !cursor.isNull(clienteIdIndex)) {
+            venta.setClienteId(cursor.getInt(clienteIdIndex));
+        }
+        if (fechaIndex >= 0) venta.setFecha(cursor.getString(fechaIndex));
+        if (metodoPagoIndex >= 0) venta.setMetodoPago(cursor.getString(metodoPagoIndex));
+        if (totalIndex >= 0 && !cursor.isNull(totalIndex)) {
+            venta.setTotal(cursor.getDouble(totalIndex));
+        }
+        if (esEnvioIndex >= 0) {
+            venta.setEsEnvio(cursor.getInt(esEnvioIndex) == 1);
+        }
+        if (estadoPagoIndex >= 0) venta.setEstadoPago(cursor.getString(estadoPagoIndex));
+        if (estadoPedidoIndex >= 0) venta.setEstadoPedido(cursor.getString(estadoPedidoIndex));
+        if (createdAtIndex >= 0) venta.setCreatedAt(cursor.getString(createdAtIndex));
+        if (syncStatusIndex >= 0) venta.setSyncStatus(cursor.getString(syncStatusIndex));
+        if (serverIdIndex >= 0 && !cursor.isNull(serverIdIndex)) {
+            venta.setServerId(cursor.getInt(serverIdIndex));
+        }
+
+        return venta;
+    }
+
+    // ==================== MÉTODOS CRUD VENTA PRODUCTO ====================
+
+    public long insertarVentaProducto(VentaProducto vp) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        if (vp.getId() != null) {
+            values.put(COL_VP_ID, vp.getId());
+        }
+        values.put(COL_VP_VENTA_ID, vp.getVentaId());
+        values.put(COL_VP_PRODUCTO_VENTA_ID, vp.getProductoVentaId());
+        values.put(COL_VP_CANTIDAD, vp.getCantidad());
+        values.put(COL_VP_PRECIO_UNITARIO, vp.getPrecioUnitario());
+        values.put(COL_VP_SUBTOTAL, vp.getSubtotal());
+
+        long id = db.insert(TABLE_VENTA_PRODUCTO, null, values);
+        db.close();
+        return id;
+    }
+
+    public boolean eliminarVentaProducto(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete(TABLE_VENTA_PRODUCTO, COL_VP_ID + " = ?",
+                new String[]{String.valueOf(id)});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+    public boolean eliminarProductosDeVenta(int ventaId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete(TABLE_VENTA_PRODUCTO, COL_VP_VENTA_ID + " = ?",
+                new String[]{String.valueOf(ventaId)});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+    public List<VentaProducto> obtenerProductosDeVenta(int ventaId) {
+        List<VentaProducto> productos = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        
+        String query = "SELECT vp.*, pv.* FROM " + TABLE_VENTA_PRODUCTO + " vp " +
+                      "INNER JOIN " + TABLE_PRODUCTOS_VENTA + " pv ON vp." + COL_VP_PRODUCTO_VENTA_ID + " = pv." + COL_PV_ID + " " +
+                      "WHERE vp." + COL_VP_VENTA_ID + " = ?";
+        
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(ventaId)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                VentaProducto vp = new VentaProducto();
+                vp.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COL_VP_ID)));
+                vp.setVentaId(cursor.getInt(cursor.getColumnIndexOrThrow(COL_VP_VENTA_ID)));
+                vp.setProductoVentaId(cursor.getInt(cursor.getColumnIndexOrThrow(COL_VP_PRODUCTO_VENTA_ID)));
+                vp.setCantidad(cursor.getDouble(cursor.getColumnIndexOrThrow(COL_VP_CANTIDAD)));
+                vp.setPrecioUnitario(cursor.getDouble(cursor.getColumnIndexOrThrow(COL_VP_PRECIO_UNITARIO)));
+                vp.setSubtotal(cursor.getDouble(cursor.getColumnIndexOrThrow(COL_VP_SUBTOTAL)));
+                
+                // Cargar datos del producto
+                ProductoVenta productoVenta = cursorToProductoVenta(cursor);
+                vp.setProductoVenta(productoVenta);
+                
+                productos.add(vp);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return productos;
     }
 
     // Clase auxiliar para SyncQueue

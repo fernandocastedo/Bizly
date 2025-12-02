@@ -7,8 +7,10 @@ import com.example.bizly1.data.database.DBHelper;
 import com.example.bizly1.data.network.ApiClient;
 import com.example.bizly1.data.network.ApiService;
 import com.example.bizly1.data.network.NetworkUtils;
+import com.example.bizly1.models.Cliente;
 import com.example.bizly1.models.Insumo;
 import com.example.bizly1.models.ProductoVenta;
+import com.example.bizly1.models.Venta;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -43,6 +45,8 @@ public class SyncManager {
         Log.d(TAG, "Iniciando sincronización completa...");
         sincronizarInsumos();
         sincronizarProductosVenta();
+        sincronizarClientes();
+        sincronizarVentas();
     }
     
     /**
@@ -125,6 +129,10 @@ public class SyncManager {
                 procesarInsumoSync(item);
             } else if ("ProductoVenta".equals(item.getTableName())) {
                 procesarProductoVentaSync(item);
+            } else if ("Cliente".equals(item.getTableName())) {
+                procesarClienteSync(item);
+            } else if ("Venta".equals(item.getTableName())) {
+                procesarVentaSync(item);
             }
         } catch (Exception e) {
             Log.e(TAG, "Error al procesar item de sync queue", e);
@@ -308,6 +316,239 @@ public class SyncManager {
                     @Override
                     public void onFailure(Call<ProductoVenta> call, Throwable t) {
                         Log.e(TAG, "Error al sincronizar ProductoVenta", t);
+                    }
+                });
+            }
+        }
+    }
+    
+    /**
+     * Sincroniza clientes desde la API (pull)
+     */
+    public void sincronizarClientes() {
+        if (!NetworkUtils.isNetworkAvailable(context)) {
+            Log.d(TAG, "No hay conexión para sincronizar clientes");
+            return;
+        }
+        
+        apiService.obtenerTodosClientes().enqueue(new Callback<List<Cliente>>() {
+            @Override
+            public void onResponse(Call<List<Cliente>> call, Response<List<Cliente>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    for (Cliente cliente : response.body()) {
+                        Cliente local = null;
+                        if (cliente.getId() != null) {
+                            List<Cliente> todos = dbHelper.obtenerTodosClientes();
+                            for (Cliente c : todos) {
+                                if (c.getServerId() != null && c.getServerId().equals(cliente.getId())) {
+                                    local = c;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        if (local == null) {
+                            cliente.setServerId(cliente.getId());
+                            cliente.setSyncStatus("synced");
+                            dbHelper.insertarCliente(cliente);
+                            Log.d(TAG, "Cliente insertado: " + cliente.getNombre());
+                        } else {
+                            cliente.setId(local.getId());
+                            cliente.setServerId(cliente.getId());
+                            cliente.setSyncStatus("synced");
+                            dbHelper.actualizarCliente(cliente);
+                            Log.d(TAG, "Cliente actualizado: " + cliente.getNombre());
+                        }
+                    }
+                    Log.d(TAG, "Clientes sincronizados desde API");
+                } else {
+                    Log.e(TAG, "Error al sincronizar clientes: " + response.code());
+                }
+            }
+            
+            @Override
+            public void onFailure(Call<List<Cliente>> call, Throwable t) {
+                Log.e(TAG, "Error de red al sincronizar clientes", t);
+            }
+        });
+    }
+    
+    private void procesarClienteSync(DBHelper.SyncQueueItem item) {
+        Cliente cliente = gson.fromJson(item.getJsonData(), Cliente.class);
+        
+        if ("DELETE".equals(item.getOperation())) {
+            if (cliente.getServerId() != null) {
+                Call<Void> call = apiService.eliminarCliente(cliente.getServerId());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            dbHelper.eliminarSyncQueue(item.getId());
+                            Log.d(TAG, "Cliente eliminado en servidor");
+                        }
+                    }
+                    
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.e(TAG, "Error al sincronizar eliminación de cliente", t);
+                    }
+                });
+            } else {
+                dbHelper.eliminarSyncQueue(item.getId());
+            }
+        } else {
+            Call<Cliente> call = null;
+            switch (item.getOperation()) {
+                case "INSERT":
+                    call = apiService.crearCliente(cliente);
+                    break;
+                case "UPDATE":
+                    if (cliente.getServerId() != null) {
+                        call = apiService.actualizarCliente(cliente.getServerId(), cliente);
+                    } else {
+                        call = apiService.crearCliente(cliente);
+                    }
+                    break;
+            }
+            
+            if (call != null) {
+                call.enqueue(new Callback<Cliente>() {
+                    @Override
+                    public void onResponse(Call<Cliente> call, Response<Cliente> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            Cliente clienteServer = response.body();
+                            clienteServer.setId(cliente.getId());
+                            clienteServer.setServerId(clienteServer.getId());
+                            clienteServer.setSyncStatus("synced");
+                            dbHelper.actualizarCliente(clienteServer);
+                            dbHelper.eliminarSyncQueue(item.getId());
+                            Log.d(TAG, "Cliente sincronizado: " + item.getOperation());
+                        }
+                    }
+                    
+                    @Override
+                    public void onFailure(Call<Cliente> call, Throwable t) {
+                        Log.e(TAG, "Error al sincronizar cliente", t);
+                    }
+                });
+            }
+        }
+    }
+    
+    /**
+     * Sincroniza ventas desde la API (pull)
+     */
+    public void sincronizarVentas() {
+        if (!NetworkUtils.isNetworkAvailable(context)) {
+            Log.d(TAG, "No hay conexión para sincronizar ventas");
+            return;
+        }
+        
+        apiService.obtenerTodasVentas().enqueue(new Callback<List<Venta>>() {
+            @Override
+            public void onResponse(Call<List<Venta>> call, Response<List<Venta>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    for (Venta venta : response.body()) {
+                        Venta local = null;
+                        if (venta.getId() != null) {
+                            List<Venta> todas = dbHelper.obtenerTodasVentas();
+                            for (Venta v : todas) {
+                                if (v.getServerId() != null && v.getServerId().equals(venta.getId())) {
+                                    local = v;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        if (local == null) {
+                            venta.setServerId(venta.getId());
+                            venta.setSyncStatus("synced");
+                            long ventaId = dbHelper.insertarVenta(venta);
+                            // Insertar productos de la venta
+                            if (venta.getProductos() != null) {
+                                for (com.example.bizly1.models.VentaProducto vp : venta.getProductos()) {
+                                    vp.setVentaId((int) ventaId);
+                                    dbHelper.insertarVentaProducto(vp);
+                                }
+                            }
+                            Log.d(TAG, "Venta insertada: " + venta.getId());
+                        } else {
+                            venta.setId(local.getId());
+                            venta.setServerId(venta.getId());
+                            venta.setSyncStatus("synced");
+                            dbHelper.actualizarVenta(venta);
+                            Log.d(TAG, "Venta actualizada: " + venta.getId());
+                        }
+                    }
+                    Log.d(TAG, "Ventas sincronizadas desde API");
+                } else {
+                    Log.e(TAG, "Error al sincronizar ventas: " + response.code());
+                }
+            }
+            
+            @Override
+            public void onFailure(Call<List<Venta>> call, Throwable t) {
+                Log.e(TAG, "Error de red al sincronizar ventas", t);
+            }
+        });
+    }
+    
+    private void procesarVentaSync(DBHelper.SyncQueueItem item) {
+        Venta venta = gson.fromJson(item.getJsonData(), Venta.class);
+        
+        if ("DELETE".equals(item.getOperation())) {
+            if (venta.getServerId() != null) {
+                Call<Void> call = apiService.eliminarVenta(venta.getServerId());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            dbHelper.eliminarSyncQueue(item.getId());
+                            Log.d(TAG, "Venta eliminada en servidor");
+                        }
+                    }
+                    
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.e(TAG, "Error al sincronizar eliminación de venta", t);
+                    }
+                });
+            } else {
+                dbHelper.eliminarSyncQueue(item.getId());
+            }
+        } else {
+            Call<Venta> call = null;
+            switch (item.getOperation()) {
+                case "INSERT":
+                    call = apiService.crearVenta(venta);
+                    break;
+                case "UPDATE":
+                    if (venta.getServerId() != null) {
+                        call = apiService.actualizarVenta(venta.getServerId(), venta);
+                    } else {
+                        call = apiService.crearVenta(venta);
+                    }
+                    break;
+            }
+            
+            if (call != null) {
+                call.enqueue(new Callback<Venta>() {
+                    @Override
+                    public void onResponse(Call<Venta> call, Response<Venta> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            Venta ventaServer = response.body();
+                            ventaServer.setId(venta.getId());
+                            ventaServer.setServerId(ventaServer.getId());
+                            ventaServer.setSyncStatus("synced");
+                            dbHelper.actualizarVenta(ventaServer);
+                            dbHelper.eliminarSyncQueue(item.getId());
+                            Log.d(TAG, "Venta sincronizada: " + item.getOperation());
+                        }
+                    }
+                    
+                    @Override
+                    public void onFailure(Call<Venta> call, Throwable t) {
+                        Log.e(TAG, "Error al sincronizar venta", t);
                     }
                 });
             }

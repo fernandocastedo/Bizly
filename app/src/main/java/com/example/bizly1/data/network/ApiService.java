@@ -1,7 +1,9 @@
 package com.example.bizly1.data.network;
 
+import com.example.bizly1.models.Cliente;
 import com.example.bizly1.models.Insumo;
 import com.example.bizly1.models.ProductoVenta;
+import com.example.bizly1.models.Venta;
 
 import java.util.List;
 
@@ -50,5 +52,45 @@ public interface ApiService {
     
     @DELETE("api/ProductosVenta/{id}")
     Call<Void> eliminarProductoVenta(@Path("id") int id);
+    
+    // ==================== ENDPOINTS CLIENTES ====================
+    
+    @GET("api/Clientes")
+    Call<List<Cliente>> obtenerTodosClientes();
+    
+    @GET("api/Clientes/{id}")
+    Call<Cliente> obtenerCliente(@Path("id") int id);
+    
+    @GET("api/Clientes/nit/{nit}")
+    Call<Cliente> obtenerClientePorNit(@Path("nit") int nit);
+    
+    @POST("api/Clientes")
+    Call<Cliente> crearCliente(@Body Cliente cliente);
+    
+    @PUT("api/Clientes/{id}")
+    Call<Cliente> actualizarCliente(@Path("id") int id, @Body Cliente cliente);
+    
+    @DELETE("api/Clientes/{id}")
+    Call<Void> eliminarCliente(@Path("id") int id);
+    
+    // ==================== ENDPOINTS VENTAS ====================
+    
+    @GET("api/Ventas")
+    Call<List<Venta>> obtenerTodasVentas();
+    
+    @GET("api/Ventas/{id}")
+    Call<Venta> obtenerVenta(@Path("id") int id);
+    
+    @GET("api/Ventas/pendientes")
+    Call<List<Venta>> obtenerVentasPendientes();
+    
+    @POST("api/Ventas")
+    Call<Venta> crearVenta(@Body Venta venta);
+    
+    @PUT("api/Ventas/{id}")
+    Call<Venta> actualizarVenta(@Path("id") int id, @Body Venta venta);
+    
+    @DELETE("api/Ventas/{id}")
+    Call<Void> eliminarVenta(@Path("id") int id);
 }
 

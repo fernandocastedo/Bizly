@@ -52,6 +52,16 @@
             android:name=".productos.ProductoVentaFormActivity"
             android:exported="false"
             android:parentActivityName=".productos.ProductosVentaActivity" />
+            
+        <activity
+            android:name=".ventas.VentasActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+            
+        <activity
+            android:name=".ventas.PedidosPendientesActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
