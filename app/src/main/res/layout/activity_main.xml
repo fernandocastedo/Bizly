@@ -119,19 +119,6 @@
             app:cornerRadius="12dp"
             app:backgroundTint="@color/primary_color" />
 
-        <!-- Botón temporal para probar Costos y Gastos -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnTestCostos"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="24dp"
-            android:text="💰 Probar Costos y Gastos (Temporal)"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.05"
-            app:cornerRadius="12dp"
-            app:backgroundTint="#F44336" />
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
