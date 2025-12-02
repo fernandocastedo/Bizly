@@ -1,6 +1,7 @@
 package com.example.bizly1.data.network;
 
 import com.example.bizly1.models.Cliente;
+import com.example.bizly1.models.CostoGasto;
 import com.example.bizly1.models.Insumo;
 import com.example.bizly1.models.ProductoVenta;
 import com.example.bizly1.models.Sucursal;
@@ -109,5 +110,24 @@ public interface ApiService {
 
     @DELETE("api/Sucursales/{id}")
     Call<Void> eliminarSucursal(@Path("id") int id);
+
+    // ==================== ENDPOINTS COSTOS GASTOS ====================
+    @GET("api/CostosGastos")
+    Call<List<CostoGasto>> obtenerTodosCostosGastos();
+
+    @GET("api/CostosGastos/{id}")
+    Call<CostoGasto> obtenerCostoGasto(@Path("id") int id);
+
+    @GET("api/CostosGastos/tipo/{tipo}")
+    Call<List<CostoGasto>> obtenerCostosGastosPorTipo(@Path("tipo") String tipo);
+
+    @POST("api/CostosGastos")
+    Call<CostoGasto> crearCostoGasto(@Body CostoGasto costoGasto);
+
+    @PUT("api/CostosGastos/{id}")
+    Call<CostoGasto> actualizarCostoGasto(@Path("id") int id, @Body CostoGasto costoGasto);
+
+    @DELETE("api/CostosGastos/{id}")
+    Call<Void> eliminarCostoGasto(@Path("id") int id);
 }
 

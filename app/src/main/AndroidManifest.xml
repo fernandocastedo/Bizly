@@ -75,6 +75,16 @@
             android:exported="false"
             android:parentActivityName=".sucursales.SucursalesActivity" />
             
+        <activity
+            android:name=".costos.CostosGastosActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+            
+        <activity
+            android:name=".costos.CostoGastoFormActivity"
+            android:exported="false"
+            android:parentActivityName=".costos.CostosGastosActivity" />
+            
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/api_key" />

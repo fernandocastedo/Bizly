@@ -3,4 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="primary_color">#FF1A3D64</color>
+    
+    <!-- Colores para tipos de costos y gastos -->
+    <color name="color_costo">#4CAF50</color>
+    <color name="color_gasto">#F44336</color>
+    <color name="color_sueldo">#2196F3</color>
+    <color name="color_adelanto">#FF9800</color>
 </resources>

@@ -11,5 +11,12 @@
         <item>Pagado</item>
         <item>Pendiente</item>
     </string-array>
+
+    <string-array name="tipos_costo_gasto">
+        <item>Costo</item>
+        <item>Gasto</item>
+        <item>Sueldo</item>
+        <item>Adelanto</item>
+    </string-array>
 </resources>
 

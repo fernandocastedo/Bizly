@@ -8,6 +8,7 @@ import com.example.bizly1.data.network.ApiClient;
 import com.example.bizly1.data.network.ApiService;
 import com.example.bizly1.data.network.NetworkUtils;
 import com.example.bizly1.models.Cliente;
+import com.example.bizly1.models.CostoGasto;
 import com.example.bizly1.models.Insumo;
 import com.example.bizly1.models.ProductoVenta;
 import com.example.bizly1.models.Sucursal;
@@ -49,6 +50,7 @@ public class SyncManager {
         sincronizarClientes();
         sincronizarVentas();
         sincronizarSucursales();
+        sincronizarCostosGastos();
     }
     
     /**
@@ -137,6 +139,8 @@ public class SyncManager {
                 procesarVentaSync(item);
             } else if ("Sucursal".equals(item.getTableName())) {
                 procesarSucursalSync(item);
+            } else if ("CostoGasto".equals(item.getTableName())) {
+                procesarCostoGastoSync(item);
             }
         } catch (Exception e) {
             Log.e(TAG, "Error al procesar item de sync queue", e);
@@ -666,6 +670,119 @@ public class SyncManager {
                     @Override
                     public void onFailure(Call<Sucursal> call, Throwable t) {
                         Log.e(TAG, "Error al sincronizar sucursal", t);
+                    }
+                });
+            }
+        }
+    }
+    
+    /**
+     * Sincroniza costos y gastos desde la API (pull)
+     */
+    public void sincronizarCostosGastos() {
+        if (!NetworkUtils.isNetworkAvailable(context)) {
+            Log.d(TAG, "No hay conexión para sincronizar costos y gastos");
+            return;
+        }
+        
+        apiService.obtenerTodosCostosGastos().enqueue(new Callback<List<CostoGasto>>() {
+            @Override
+            public void onResponse(Call<List<CostoGasto>> call, Response<List<CostoGasto>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    for (CostoGasto cg : response.body()) {
+                        CostoGasto local = null;
+                        if (cg.getId() != null) {
+                            List<CostoGasto> todos = dbHelper.obtenerTodosCostosGastos();
+                            for (CostoGasto c : todos) {
+                                if (c.getServerId() != null && c.getServerId().equals(cg.getId())) {
+                                    local = c;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        if (local == null) {
+                            cg.setServerId(cg.getId());
+                            cg.setSyncStatus("synced");
+                            dbHelper.insertarCostoGasto(cg);
+                            Log.d(TAG, "CostoGasto insertado: " + cg.getDescripcion());
+                        } else {
+                            cg.setId(local.getId());
+                            cg.setServerId(cg.getId());
+                            cg.setSyncStatus("synced");
+                            dbHelper.actualizarCostoGasto(cg);
+                            Log.d(TAG, "CostoGasto actualizado: " + cg.getDescripcion());
+                        }
+                    }
+                    Log.d(TAG, "Costos y Gastos sincronizados desde API");
+                } else {
+                    Log.e(TAG, "Error al sincronizar costos y gastos: " + response.code());
+                }
+            }
+            
+            @Override
+            public void onFailure(Call<List<CostoGasto>> call, Throwable t) {
+                Log.e(TAG, "Error de red al sincronizar costos y gastos", t);
+            }
+        });
+    }
+    
+    private void procesarCostoGastoSync(DBHelper.SyncQueueItem item) {
+        CostoGasto costoGasto = gson.fromJson(item.getJsonData(), CostoGasto.class);
+        
+        if ("DELETE".equals(item.getOperation())) {
+            if (costoGasto.getServerId() != null) {
+                Call<Void> call = apiService.eliminarCostoGasto(costoGasto.getServerId());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            dbHelper.eliminarSyncQueue(item.getId());
+                            Log.d(TAG, "CostoGasto eliminado en servidor");
+                        }
+                    }
+                    
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.e(TAG, "Error al sincronizar eliminación de costo/gasto", t);
+                    }
+                });
+            } else {
+                dbHelper.eliminarSyncQueue(item.getId());
+            }
+        } else {
+            Call<CostoGasto> call = null;
+            switch (item.getOperation()) {
+                case "INSERT":
+                    call = apiService.crearCostoGasto(costoGasto);
+                    break;
+                case "UPDATE":
+                    if (costoGasto.getServerId() != null) {
+                        call = apiService.actualizarCostoGasto(costoGasto.getServerId(), costoGasto);
+                    } else {
+                        call = apiService.crearCostoGasto(costoGasto);
+                    }
+                    break;
+            }
+            
+            if (call != null) {
+                call.enqueue(new Callback<CostoGasto>() {
+                    @Override
+                    public void onResponse(Call<CostoGasto> call, Response<CostoGasto> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            CostoGasto cgServer = response.body();
+                            cgServer.setId(costoGasto.getId());
+                            cgServer.setServerId(cgServer.getId());
+                            cgServer.setSyncStatus("synced");
+                            dbHelper.actualizarCostoGasto(cgServer);
+                            dbHelper.eliminarSyncQueue(item.getId());
+                            Log.d(TAG, "CostoGasto sincronizado: " + item.getOperation());
+                        }
+                    }
+                    
+                    @Override
+                    public void onFailure(Call<CostoGasto> call, Throwable t) {
+                        Log.e(TAG, "Error al sincronizar costo/gasto", t);
                     }
                 });
             }

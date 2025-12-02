@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.bizly1.models.Cliente;
+import com.example.bizly1.models.CostoGasto;
 import com.example.bizly1.models.Insumo;
 import com.example.bizly1.models.ProductoVenta;
 import com.example.bizly1.models.ProductoVentaInsumo;
@@ -20,7 +21,7 @@ import java.util.List;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "bizlyDB.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     // Tablas
     private static final String TABLE_INSUMOS = "insumos";
@@ -30,6 +31,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TABLE_VENTAS = "ventas";
     private static final String TABLE_VENTA_PRODUCTO = "venta_producto";
     private static final String TABLE_SUCURSALES = "sucursales";
+    private static final String TABLE_COSTOS_GASTOS = "costos_gastos";
     private static final String TABLE_SYNC_QUEUE = "sync_queue";
 
     // Columnas Insumos
@@ -119,6 +121,23 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String COL_SUCURSAL_UPDATED_AT = "updated_at";
     private static final String COL_SUCURSAL_SYNC_STATUS = "sync_status";
     private static final String COL_SUCURSAL_SERVER_ID = "server_id";
+
+    // Columnas CostosGastos
+    private static final String COL_CG_ID = "id";
+    private static final String COL_CG_EMPRESA_ID = "empresa_id";
+    private static final String COL_CG_SUCURSAL_ID = "sucursal_id";
+    private static final String COL_CG_TIPO = "tipo";
+    private static final String COL_CG_CATEGORIA = "categoria";
+    private static final String COL_CG_DESCRIPCION = "descripcion";
+    private static final String COL_CG_MONTO = "monto";
+    private static final String COL_CG_FECHA = "fecha";
+    private static final String COL_CG_TRABAJADOR_ID = "trabajador_id";
+    private static final String COL_CG_METODO_PAGO = "metodo_pago";
+    private static final String COL_CG_COMPROBANTE = "comprobante";
+    private static final String COL_CG_CREATED_AT = "created_at";
+    private static final String COL_CG_UPDATED_AT = "updated_at";
+    private static final String COL_CG_SYNC_STATUS = "sync_status";
+    private static final String COL_CG_SERVER_ID = "server_id";
 
     // Columnas SyncQueue
     private static final String COL_SYNC_ID = "id";
@@ -254,6 +273,27 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL(createSucursalesTable);
 
+        // Tabla CostosGastos
+        String createCostosGastosTable = "CREATE TABLE " + TABLE_COSTOS_GASTOS + " (" +
+                COL_CG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL_CG_EMPRESA_ID + " INTEGER, " +
+                COL_CG_SUCURSAL_ID + " INTEGER, " +
+                COL_CG_TIPO + " TEXT NOT NULL, " +
+                COL_CG_CATEGORIA + " TEXT, " +
+                COL_CG_DESCRIPCION + " TEXT, " +
+                COL_CG_MONTO + " REAL NOT NULL, " +
+                COL_CG_FECHA + " TEXT, " +
+                COL_CG_TRABAJADOR_ID + " INTEGER, " +
+                COL_CG_METODO_PAGO + " TEXT, " +
+                COL_CG_COMPROBANTE + " TEXT, " +
+                COL_CG_CREATED_AT + " TEXT, " +
+                COL_CG_UPDATED_AT + " TEXT, " +
+                COL_CG_SYNC_STATUS + " TEXT DEFAULT 'pending', " +
+                COL_CG_SERVER_ID + " INTEGER" +
+                ")";
+
+        db.execSQL(createCostosGastosTable);
+
         // Tabla SyncQueue
         String createSyncQueueTable = "CREATE TABLE " + TABLE_SYNC_QUEUE + " (" +
                 COL_SYNC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -368,6 +408,28 @@ public class DBHelper extends SQLiteOpenHelper {
                     ")";
 
             db.execSQL(createSucursalesTable);
+        }
+        if (oldVersion < 5) {
+            // Crear nueva tabla para costos y gastos
+            String createCostosGastosTable = "CREATE TABLE IF NOT EXISTS " + TABLE_COSTOS_GASTOS + " (" +
+                    COL_CG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COL_CG_EMPRESA_ID + " INTEGER, " +
+                    COL_CG_SUCURSAL_ID + " INTEGER, " +
+                    COL_CG_TIPO + " TEXT NOT NULL, " +
+                    COL_CG_CATEGORIA + " TEXT, " +
+                    COL_CG_DESCRIPCION + " TEXT, " +
+                    COL_CG_MONTO + " REAL NOT NULL, " +
+                    COL_CG_FECHA + " TEXT, " +
+                    COL_CG_TRABAJADOR_ID + " INTEGER, " +
+                    COL_CG_METODO_PAGO + " TEXT, " +
+                    COL_CG_COMPROBANTE + " TEXT, " +
+                    COL_CG_CREATED_AT + " TEXT, " +
+                    COL_CG_UPDATED_AT + " TEXT, " +
+                    COL_CG_SYNC_STATUS + " TEXT DEFAULT 'pending', " +
+                    COL_CG_SERVER_ID + " INTEGER" +
+                    ")";
+
+            db.execSQL(createCostosGastosTable);
         }
     }
 
@@ -1411,6 +1473,183 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return sucursal;
+    }
+
+    // ==================== MÉTODOS CRUD COSTOS GASTOS ====================
+
+    public long insertarCostoGasto(CostoGasto costoGasto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        if (costoGasto.getId() != null) {
+            values.put(COL_CG_ID, costoGasto.getId());
+        }
+        if (costoGasto.getEmpresaId() != null) {
+            values.put(COL_CG_EMPRESA_ID, costoGasto.getEmpresaId());
+        }
+        if (costoGasto.getSucursalId() != null) {
+            values.put(COL_CG_SUCURSAL_ID, costoGasto.getSucursalId());
+        }
+        values.put(COL_CG_TIPO, costoGasto.getTipo());
+        values.put(COL_CG_CATEGORIA, costoGasto.getCategoria());
+        values.put(COL_CG_DESCRIPCION, costoGasto.getDescripcion());
+        if (costoGasto.getMonto() != null) {
+            values.put(COL_CG_MONTO, costoGasto.getMonto());
+        }
+        values.put(COL_CG_FECHA, costoGasto.getFecha());
+        if (costoGasto.getTrabajadorId() != null) {
+            values.put(COL_CG_TRABAJADOR_ID, costoGasto.getTrabajadorId());
+        }
+        values.put(COL_CG_METODO_PAGO, costoGasto.getMetodoPago());
+        values.put(COL_CG_COMPROBANTE, costoGasto.getComprobante());
+        values.put(COL_CG_CREATED_AT, costoGasto.getCreatedAt());
+        values.put(COL_CG_UPDATED_AT, costoGasto.getUpdatedAt());
+        values.put(COL_CG_SYNC_STATUS, costoGasto.getSyncStatus() != null ? costoGasto.getSyncStatus() : "pending");
+        if (costoGasto.getServerId() != null) {
+            values.put(COL_CG_SERVER_ID, costoGasto.getServerId());
+        }
+
+        long id = db.insert(TABLE_COSTOS_GASTOS, null, values);
+        db.close();
+        return id;
+    }
+
+    public boolean actualizarCostoGasto(CostoGasto costoGasto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        if (costoGasto.getEmpresaId() != null) {
+            values.put(COL_CG_EMPRESA_ID, costoGasto.getEmpresaId());
+        }
+        if (costoGasto.getSucursalId() != null) {
+            values.put(COL_CG_SUCURSAL_ID, costoGasto.getSucursalId());
+        }
+        values.put(COL_CG_TIPO, costoGasto.getTipo());
+        values.put(COL_CG_CATEGORIA, costoGasto.getCategoria());
+        values.put(COL_CG_DESCRIPCION, costoGasto.getDescripcion());
+        if (costoGasto.getMonto() != null) {
+            values.put(COL_CG_MONTO, costoGasto.getMonto());
+        }
+        values.put(COL_CG_FECHA, costoGasto.getFecha());
+        if (costoGasto.getTrabajadorId() != null) {
+            values.put(COL_CG_TRABAJADOR_ID, costoGasto.getTrabajadorId());
+        }
+        values.put(COL_CG_METODO_PAGO, costoGasto.getMetodoPago());
+        values.put(COL_CG_COMPROBANTE, costoGasto.getComprobante());
+        values.put(COL_CG_UPDATED_AT, costoGasto.getUpdatedAt());
+        values.put(COL_CG_SYNC_STATUS, costoGasto.getSyncStatus() != null ? costoGasto.getSyncStatus() : "pending");
+        if (costoGasto.getServerId() != null) {
+            values.put(COL_CG_SERVER_ID, costoGasto.getServerId());
+        }
+
+        int rowsAffected = db.update(TABLE_COSTOS_GASTOS, values, COL_CG_ID + " = ?",
+                new String[]{String.valueOf(costoGasto.getId())});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+    public boolean eliminarCostoGasto(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete(TABLE_COSTOS_GASTOS, COL_CG_ID + " = ?",
+                new String[]{String.valueOf(id)});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+    public CostoGasto obtenerCostoGasto(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_COSTOS_GASTOS, null, COL_CG_ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+
+        CostoGasto costoGasto = null;
+        if (cursor.moveToFirst()) {
+            costoGasto = cursorToCostoGasto(cursor);
+        }
+
+        cursor.close();
+        db.close();
+        return costoGasto;
+    }
+
+    public List<CostoGasto> obtenerTodosCostosGastos() {
+        List<CostoGasto> costosGastos = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_COSTOS_GASTOS, null, null, null, null, null, COL_CG_FECHA + " DESC");
+
+        if (cursor.moveToFirst()) {
+            do {
+                costosGastos.add(cursorToCostoGasto(cursor));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return costosGastos;
+    }
+
+    public List<CostoGasto> obtenerCostosGastosPorTipo(String tipo) {
+        List<CostoGasto> costosGastos = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_COSTOS_GASTOS, null, COL_CG_TIPO + " = ?",
+                new String[]{tipo}, null, null, COL_CG_FECHA + " DESC");
+
+        if (cursor.moveToFirst()) {
+            do {
+                costosGastos.add(cursorToCostoGasto(cursor));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return costosGastos;
+    }
+
+    private CostoGasto cursorToCostoGasto(Cursor cursor) {
+        CostoGasto costoGasto = new CostoGasto();
+
+        int idIndex = cursor.getColumnIndex(COL_CG_ID);
+        int empresaIdIndex = cursor.getColumnIndex(COL_CG_EMPRESA_ID);
+        int sucursalIdIndex = cursor.getColumnIndex(COL_CG_SUCURSAL_ID);
+        int tipoIndex = cursor.getColumnIndex(COL_CG_TIPO);
+        int categoriaIndex = cursor.getColumnIndex(COL_CG_CATEGORIA);
+        int descripcionIndex = cursor.getColumnIndex(COL_CG_DESCRIPCION);
+        int montoIndex = cursor.getColumnIndex(COL_CG_MONTO);
+        int fechaIndex = cursor.getColumnIndex(COL_CG_FECHA);
+        int trabajadorIdIndex = cursor.getColumnIndex(COL_CG_TRABAJADOR_ID);
+        int metodoPagoIndex = cursor.getColumnIndex(COL_CG_METODO_PAGO);
+        int comprobanteIndex = cursor.getColumnIndex(COL_CG_COMPROBANTE);
+        int createdAtIndex = cursor.getColumnIndex(COL_CG_CREATED_AT);
+        int updatedAtIndex = cursor.getColumnIndex(COL_CG_UPDATED_AT);
+        int syncStatusIndex = cursor.getColumnIndex(COL_CG_SYNC_STATUS);
+        int serverIdIndex = cursor.getColumnIndex(COL_CG_SERVER_ID);
+
+        if (idIndex >= 0) costoGasto.setId(cursor.getInt(idIndex));
+        if (empresaIdIndex >= 0 && !cursor.isNull(empresaIdIndex)) {
+            costoGasto.setEmpresaId(cursor.getInt(empresaIdIndex));
+        }
+        if (sucursalIdIndex >= 0 && !cursor.isNull(sucursalIdIndex)) {
+            costoGasto.setSucursalId(cursor.getInt(sucursalIdIndex));
+        }
+        if (tipoIndex >= 0) costoGasto.setTipo(cursor.getString(tipoIndex));
+        if (categoriaIndex >= 0) costoGasto.setCategoria(cursor.getString(categoriaIndex));
+        if (descripcionIndex >= 0) costoGasto.setDescripcion(cursor.getString(descripcionIndex));
+        if (montoIndex >= 0 && !cursor.isNull(montoIndex)) {
+            costoGasto.setMonto(cursor.getDouble(montoIndex));
+        }
+        if (fechaIndex >= 0) costoGasto.setFecha(cursor.getString(fechaIndex));
+        if (trabajadorIdIndex >= 0 && !cursor.isNull(trabajadorIdIndex)) {
+            costoGasto.setTrabajadorId(cursor.getInt(trabajadorIdIndex));
+        }
+        if (metodoPagoIndex >= 0) costoGasto.setMetodoPago(cursor.getString(metodoPagoIndex));
+        if (comprobanteIndex >= 0) costoGasto.setComprobante(cursor.getString(comprobanteIndex));
+        if (createdAtIndex >= 0) costoGasto.setCreatedAt(cursor.getString(createdAtIndex));
+        if (updatedAtIndex >= 0) costoGasto.setUpdatedAt(cursor.getString(updatedAtIndex));
+        if (syncStatusIndex >= 0) costoGasto.setSyncStatus(cursor.getString(syncStatusIndex));
+        if (serverIdIndex >= 0 && !cursor.isNull(serverIdIndex)) {
+            costoGasto.setServerId(cursor.getInt(serverIdIndex));
+        }
+
+        return costoGasto;
     }
 
     // Clase auxiliar para SyncQueue
