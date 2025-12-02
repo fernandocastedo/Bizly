@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/txtDialogTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Productos Detectados"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Contenedor de lista de productos -->
+        <LinearLayout
+            android:id="@+id/containerProductList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Productos detectados:"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerDetectedProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="400dp"
+                android:nestedScrollingEnabled="false" />
+
+            <TextView
+                android:id="@+id/txtEmptyMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No hay productos detectados"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="16dp"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnConfirmAll"
+                android:text="Confirmar Todos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
+
+        </LinearLayout>
+
+        <!-- Contenedor de formulario de edición -->
+        <LinearLayout
+            android:id="@+id/containerEditForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Editar Producto"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+            <EditText
+                android:id="@+id/edtName"
+                android:hint="Nombre del producto"
+                android:inputType="textCapWords"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:layout_marginBottom="16dp" />
+
+            <EditText
+                android:id="@+id/edtQuantity"
+                android:hint="Cantidad"
+                android:inputType="numberDecimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:layout_marginBottom="16dp" />
+
+            <EditText
+                android:id="@+id/edtUnit"
+                android:hint="Unidad (kg, u, L...)"
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:layout_marginBottom="16dp" />
+
+            <EditText
+                android:id="@+id/edtUnitPrice"
+                android:hint="Precio unitario"
+                android:inputType="numberDecimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:layout_marginBottom="16dp" />
+
+            <EditText
+                android:id="@+id/edtTotalPrice"
+                android:hint="Precio total"
+                android:inputType="numberDecimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:layout_marginBottom="16dp" />
+
+            <EditText
+                android:id="@+id/edtCategoria"
+                android:hint="Categoría"
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:layout_marginBottom="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnCancelEdit"
+                    android:text="Cancelar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp" />
+
+                <Button
+                    android:id="@+id/btnConfirmEdit"
+                    android:text="Guardar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+

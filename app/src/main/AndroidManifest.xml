@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permisos -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -20,6 +26,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name=".inventario.InventoryActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+            
+        <activity
+            android:name=".inventario.ItemFormActivity"
+            android:exported="false"
+            android:parentActivityName=".inventario.InventoryActivity" />
+            
+        <activity
+            android:name=".inventario.CameraScanActivity"
+            android:exported="false"
+            android:parentActivityName=".inventario.InventoryActivity"
+            android:screenOrientation="portrait" />
+            
+        <activity
+            android:name=".productos.ProductosVentaActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+            
+        <activity
+            android:name=".productos.ProductoVentaFormActivity"
+            android:exported="false"
+            android:parentActivityName=".productos.ProductosVentaActivity" />
     </application>
 
 </manifest>
