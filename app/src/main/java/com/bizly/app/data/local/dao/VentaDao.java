@@ -32,11 +32,11 @@ public interface VentaDao {
            "ORDER BY created_at DESC")
     List<VentaEntity> obtenerPedidosPendientes(int empresaId, int sucursalId);
     
-    @Query("SELECT usuario_id, COUNT(*) as total_ventas, SUM(total) as total_monto " +
+    @Query("SELECT usuario_id as usuarioId, COUNT(*) as totalVentas, SUM(total) as totalMonto " +
            "FROM ventas WHERE empresa_id = :empresaId AND sucursal_id = :sucursalId " +
            "AND fecha BETWEEN :fechaInicio AND :fechaFin " +
-           "GROUP BY usuario_id ORDER BY total_monto DESC")
-    List<Object[]> obtenerTopVendedores(int empresaId, int sucursalId, Date fechaInicio, Date fechaFin);
+           "GROUP BY usuario_id ORDER BY totalMonto DESC")
+    List<com.bizly.app.data.local.entity.TopVendedorResult> obtenerTopVendedores(int empresaId, int sucursalId, Date fechaInicio, Date fechaFin);
     
     @Query("SELECT SUM(total) FROM ventas WHERE empresa_id = :empresaId AND sucursal_id = :sucursalId " +
            "AND fecha BETWEEN :fechaInicio AND :fechaFin")

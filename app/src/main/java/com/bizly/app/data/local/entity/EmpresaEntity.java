@@ -4,14 +4,14 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.ColumnInfo;
 import androidx.room.TypeConverters;
-import com.bizly.app.core.database.TypeConverters;
+import com.bizly.app.core.database.AppTypeConverters;
 import java.util.Date;
 
 /**
  * Entidad Room para la tabla empresas
  */
 @Entity(tableName = "empresas")
-@TypeConverters(TypeConverters.class)
+@TypeConverters(AppTypeConverters.class)
 public class EmpresaEntity {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

@@ -70,7 +70,13 @@ public class VentaRepositoryLocal implements VentaRepository {
     
     @Override
     public List<Object[]> obtenerTopVendedores(int empresaId, int sucursalId, Date fechaInicio, Date fechaFin) {
-        return ventaDao.obtenerTopVendedores(empresaId, sucursalId, fechaInicio, fechaFin);
+        // Convertir TopVendedorResult a Object[] para mantener compatibilidad con la interfaz
+        List<com.bizly.app.data.local.entity.TopVendedorResult> resultados = ventaDao.obtenerTopVendedores(empresaId, sucursalId, fechaInicio, fechaFin);
+        List<Object[]> lista = new ArrayList<>();
+        for (com.bizly.app.data.local.entity.TopVendedorResult resultado : resultados) {
+            lista.add(new Object[]{resultado.usuarioId, resultado.totalVentas, resultado.totalMonto});
+        }
+        return lista;
     }
     
     @Override

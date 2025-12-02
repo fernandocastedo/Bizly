@@ -6,7 +6,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.TypeConverters;
-import com.bizly.app.core.database.TypeConverters;
+import com.bizly.app.core.database.AppTypeConverters;
 import java.util.Date;
 
 /**
@@ -37,7 +37,7 @@ import java.util.Date;
         )
     }
 )
-@TypeConverters(TypeConverters.class)
+@TypeConverters(AppTypeConverters.class)
 public class UsuarioEntity {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

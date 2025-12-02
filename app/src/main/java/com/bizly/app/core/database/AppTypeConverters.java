@@ -7,7 +7,7 @@ import java.util.Date;
  * Convertidores de tipos para Room Database
  * Convierte tipos que Room no soporta nativamente (como Date) a tipos compatibles
  */
-public class TypeConverters {
+public class AppTypeConverters {
 
     /**
      * Convierte un Long (timestamp) a Date

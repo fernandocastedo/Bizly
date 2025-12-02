@@ -1,13 +1,16 @@
-package com.example.bizly1;
+package com.bizly.app;
 
 import android.os.Bundle;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+/**
+ * Activity principal de la aplicación Bizly
+ * Punto de entrada de la aplicación
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -22,3 +25,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 }
+

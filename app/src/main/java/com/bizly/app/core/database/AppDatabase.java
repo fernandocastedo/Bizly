@@ -6,6 +6,7 @@ import androidx.room.TypeConverters;
 
 import com.bizly.app.data.local.entity.*;
 import com.bizly.app.data.local.dao.*;
+import com.bizly.app.core.database.AppTypeConverters;
 
 /**
  * Base de datos principal de la aplicación usando Room
@@ -30,7 +31,7 @@ import com.bizly.app.data.local.dao.*;
     version = 1,
     exportSchema = false
 )
-@TypeConverters(TypeConverters.class)
+@TypeConverters(AppTypeConverters.class)
 public abstract class AppDatabase extends RoomDatabase {
     
     // DAOs

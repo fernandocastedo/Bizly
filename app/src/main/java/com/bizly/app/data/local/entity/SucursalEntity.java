@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.ColumnInfo;
 import androidx.room.ForeignKey;
 import androidx.room.TypeConverters;
-import com.bizly.app.core.database.TypeConverters;
+import com.bizly.app.core.database.AppTypeConverters;
 import java.util.Date;
 
 /**
@@ -20,7 +20,7 @@ import java.util.Date;
         onDelete = ForeignKey.CASCADE
     )
 )
-@TypeConverters(TypeConverters.class)
+@TypeConverters(AppTypeConverters.class)
 public class SucursalEntity {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
