@@ -3,6 +3,8 @@ package com.example.bizly1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -27,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         MaterialButton loginButton = findViewById(R.id.loginButton);
-        MaterialButton registerButton = findViewById(R.id.registerButton);
+        TextView registerLink = findViewById(R.id.registerLink);
+        ImageButton backButton = findViewById(R.id.backButton);
 
         loginButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
@@ -35,9 +38,11 @@ public class MainActivity extends AppCompatActivity {
             finish(); // Optional: Close login so back button doesn't return here
         });
 
-        registerButton.setOnClickListener(v -> {
+        registerLink.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
+
+        backButton.setOnClickListener(v -> finish());
     }
 }

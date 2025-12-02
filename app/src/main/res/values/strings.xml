@@ -5,6 +5,13 @@
     <string name="password_hint">Contraseña</string>
     <string name="login_button">Iniciar sesión</string>
     <string name="register_button">Crear cuenta</string>
+    <string name="login_title">Iniciar Sesion</string>
+    <string name="welcome_title">¡Bienvenido a Bizly!</string>
+    <string name="welcome_subtitle_login">DONDE VENDES CON INTELIGENCIA.</string>
+    <string name="email_placeholder">Escriba su correo electronico</string>
+    <string name="password_placeholder">Escriba su contraseña</string>
+    <string name="register_question">¿No tienes una cuenta?</string>
+    <string name="register_link">Registrate</string>
 
     <!-- Dashboard Strings -->
     <string name="dashboard_title">Dashboard</string>
@@ -52,7 +59,16 @@
     <string name="back">Atrás</string>
     <string name="register_title">Crear Cuenta</string>
     <string name="register_heading">Regístrate</string>
-    <string name="confirm_password_hint">Confirmar Contraseña</string>
+    <string name="register_header_title">Registrate</string>
+    <string name="register_main_title">Crea tu cuenta</string>
+    <string name="register_subtitle">Y ABRE TUS POSIBILIDADES.</string>
+    <string name="full_name_label">Nombre completo</string>
+    <string name="full_name_placeholder">John Doe</string>
+    <string name="email_placeholder_register">name@example.com</string>
+    <string name="password_placeholder_register">Escriba una contraseña segura</string>
+    <string name="confirm_password_placeholder">Confirma la contraseña</string>
+    <string name="confirm_password_hint">Confirma la contraseña</string>
+    <string name="register_button_text">Registrar</string>
     <string name="terms_text">Acepto los</string>
     <string name="terms_link">Términos y Condiciones</string>
     <string name="continue_button">Continuar</string>
