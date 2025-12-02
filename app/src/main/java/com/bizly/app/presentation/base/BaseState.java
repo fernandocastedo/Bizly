@@ -10,7 +10,7 @@ public class BaseState {
     public static final int STATE_SUCCESS = 2;
     public static final int STATE_ERROR = 3;
 
-    private int currentState = STATE_IDLE;
+    protected int currentState = STATE_IDLE;
     private String message;
 
     public BaseState(int currentState) {

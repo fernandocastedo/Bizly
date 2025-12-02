@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".RegisterActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp"
+            android:gravity="center_horizontal">
+
+            <!-- Título Bizly -->
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bizly"
+                android:textSize="48sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:letterSpacing="0.05"
+                android:layout_marginTop="24dp" />
+
+            <!-- Indicador de paso -->
+            <TextView
+                android:id="@+id/stepIndicatorTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paso 1 de 2"
+                android:textSize="16sp"
+                android:textColor="#666666"
+                android:layout_marginTop="8dp" />
+
+            <!-- Subtítulo dinámico -->
+            <TextView
+                android:id="@+id/subtitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Datos de tu emprendimiento"
+                android:textSize="20sp"
+                android:textColor="#666666"
+                android:layout_marginTop="16dp" />
+
+            <!-- ========== PASO 1: DATOS DE EMPRESA ========== -->
+            <LinearLayout
+                android:id="@+id/step1Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="24dp">
+
+                <!-- Campo de nombre de empresa -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/empresaNombreInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Nombre del emprendimiento"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/empresaNombreEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo de rubro -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/empresaRubroInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Rubro"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/empresaRubroEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo de descripción -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/empresaDescripcionInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Descripción"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/empresaDescripcionEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:gravity="top"
+                        android:minHeight="80dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo de dirección -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/empresaDireccionInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Dirección"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/empresaDireccionEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPostalAddress"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo de ciudad -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/empresaCiudadInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Ciudad"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/empresaCiudadEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo de departamento -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/empresaDepartamentoInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Departamento (opcional)"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/empresaDepartamentoEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo de teléfono -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/empresaTelefonoInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Teléfono (opcional)"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/empresaTelefonoEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo de margen de ganancia -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/empresaMargenInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Margen de ganancia (%)"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/empresaMargenEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Selector de logo -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Logo del emprendimiento"
+                    android:textSize="14sp"
+                    android:textColor="#666666"
+                    android:layout_marginTop="24dp"
+                    android:layout_gravity="start" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="8dp">
+
+                    <ImageView
+                        android:id="@+id/logoImageView"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerCrop"
+                        android:background="@android:drawable/dialog_holo_light_frame"
+                        android:contentDescription="Logo del emprendimiento" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/selectLogoButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Seleccionar logo"
+                        android:layout_marginStart="16dp"
+                        app:backgroundTint="@color/primary_color"
+                        app:cornerRadius="8dp" />
+                </LinearLayout>
+
+                <!-- Progress Indicator -->
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progressIndicator1"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone"
+                    app:indicatorColor="@color/primary_color" />
+
+                <!-- Botón de continuar al paso 2 -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/continueToStep2Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="40dp"
+                    android:letterSpacing="0.05"
+                    android:text="Continuar"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/primary_color"
+                    app:cornerRadius="12dp" />
+
+            </LinearLayout>
+
+            <!-- ========== PASO 2: DATOS DE USUARIO ========== -->
+            <LinearLayout
+                android:id="@+id/step2Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginTop="24dp">
+
+                <!-- Campo de nombre del usuario -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/usuarioNombreInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="@string/name_hint"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/usuarioNombreEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:autofillHints="name"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo de correo electrónico -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/usuarioEmailInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="@string/email_hint"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/usuarioEmailEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:autofillHints="email"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo de contraseña -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/usuarioPasswordInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="@string/password_hint"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    app:endIconMode="password_toggle"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/usuarioPasswordEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:autofillHints="password"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo de confirmar contraseña -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/usuarioConfirmPasswordInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="@string/confirm_password_hint"
+                    app:boxStrokeColor="@color/primary_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@color/primary_color"
+                    app:endIconMode="password_toggle"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/usuarioConfirmPasswordEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:autofillHints="password"
+                        android:minHeight="56dp"
+                        android:textSize="16sp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Progress Indicator -->
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progressIndicator2"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone"
+                    app:indicatorColor="@color/primary_color" />
+
+                <!-- Botón de registrar -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/registerButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="40dp"
+                    android:letterSpacing="0.05"
+                    android:text="@string/register_button"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/primary_color"
+                    app:cornerRadius="12dp" />
+
+            </LinearLayout>
+
+            <!-- Botón de volver a login -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/backToLoginButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="16dp"
+                android:text="Ya tengo cuenta"
+                android:textSize="16sp"
+                android:textStyle="normal"
+                android:letterSpacing="0.05"
+                app:cornerRadius="12dp"
+                app:backgroundTint="@android:color/transparent"
+                app:strokeColor="@color/primary_color"
+                app:strokeWidth="2dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

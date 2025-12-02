@@ -3,6 +3,8 @@
     <string name="app_logo">Logo de Bizly</string>
     <string name="email_hint">Correo electrónico</string>
     <string name="password_hint">Contraseña</string>
+    <string name="confirm_password_hint">Confirmar contraseña</string>
+    <string name="name_hint">Nombre completo</string>
     <string name="login_button">Iniciar sesión</string>
     <string name="register_button">Crear cuenta</string>
 </resources>

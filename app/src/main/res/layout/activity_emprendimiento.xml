@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".presentation.emprendimiento.EmprendimientoActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/primary_color"
+            app:title="Mi Emprendimiento"
+            app:titleTextColor="@android:color/white"
+            app:navigationIcon="@android:drawable/ic_menu_revert" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Card de Información del Emprendimiento -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Datos del Emprendimiento"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="#000000"
+                        android:layout_marginBottom="20dp" />
+
+                    <!-- Logo del emprendimiento -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Logo del emprendimiento"
+                        android:textSize="14sp"
+                        android:textColor="#666666"
+                        android:layout_marginBottom="8dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="20dp">
+
+                        <ImageView
+                            android:id="@+id/logoImageView"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:scaleType="centerCrop"
+                            android:background="@android:drawable/dialog_holo_light_frame"
+                            android:contentDescription="Logo del emprendimiento" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/selectLogoButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cambiar logo"
+                            android:layout_marginStart="16dp"
+                            app:backgroundTint="@color/primary_color"
+                            app:cornerRadius="8dp" />
+                    </LinearLayout>
+
+                    <!-- Campo de nombre de empresa -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/nombreInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="Nombre del emprendimiento"
+                        app:boxStrokeColor="@color/primary_color"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@color/primary_color"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nombreEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:minHeight="56dp"
+                            android:textSize="16sp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Campo de rubro -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/rubroInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="Rubro"
+                        app:boxStrokeColor="@color/primary_color"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@color/primary_color"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/rubroEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:minHeight="56dp"
+                            android:textSize="16sp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Campo de descripción -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/descripcionInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="Descripción"
+                        app:boxStrokeColor="@color/primary_color"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@color/primary_color"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/descripcionEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine"
+                            android:minLines="3"
+                            android:gravity="top"
+                            android:minHeight="80dp"
+                            android:textSize="16sp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Campo de margen de ganancia -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/margenInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:hint="Margen de ganancia (%)"
+                        app:boxStrokeColor="@color/primary_color"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@color/primary_color"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/margenEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:minHeight="56dp"
+                            android:textSize="16sp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Progress Indicator -->
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/progressIndicator"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone"
+                        app:indicatorColor="@color/primary_color" />
+
+                    <!-- Botón de guardar -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/guardarButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="Guardar Cambios"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/primary_color"
+                        app:cornerRadius="12dp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

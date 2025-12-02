@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permisos para acceso a imágenes -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -20,6 +25,38 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.bizly.app.presentation.auth.RegisterActivity"
+            android:exported="false"
+            android:parentActivityName="com.bizly.app.MainActivity" />
+        <activity
+            android:name="com.bizly.app.presentation.dashboard.DashboardActivity"
+            android:exported="false"
+            android:parentActivityName="com.bizly.app.MainActivity" />
+        <activity
+            android:name="com.bizly.app.presentation.emprendimiento.EmprendimientoActivity"
+            android:exported="false"
+            android:parentActivityName="com.bizly.app.presentation.dashboard.DashboardActivity" />
+        <activity
+            android:name="com.bizly.app.presentation.sucursales.SucursalesActivity"
+            android:exported="false"
+            android:parentActivityName="com.bizly.app.presentation.dashboard.DashboardActivity" />
+        <activity
+            android:name="com.bizly.app.presentation.sucursales.RegistrarSucursalActivity"
+            android:exported="false"
+            android:parentActivityName="com.bizly.app.presentation.sucursales.SucursalesActivity" />
+        <activity
+            android:name="com.bizly.app.presentation.trabajadores.TrabajadoresActivity"
+            android:exported="false"
+            android:parentActivityName="com.bizly.app.presentation.dashboard.DashboardActivity" />
+        <activity
+            android:name="com.bizly.app.presentation.trabajadores.CrearTrabajadorActivity"
+            android:exported="false"
+            android:parentActivityName="com.bizly.app.presentation.trabajadores.TrabajadoresActivity" />
+        <activity
+            android:name="com.bizly.app.presentation.trabajadores.EditarTrabajadorActivity"
+            android:exported="false"
+            android:parentActivityName="com.bizly.app.presentation.trabajadores.TrabajadoresActivity" />
     </application>
 
 </manifest>
