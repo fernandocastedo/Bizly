@@ -2,8 +2,12 @@ package com.example.bizly1.data.network;
 
 import com.example.bizly1.models.Cliente;
 import com.example.bizly1.models.CostoGasto;
+import com.example.bizly1.models.Empresa;
 import com.example.bizly1.models.Insumo;
+import com.example.bizly1.models.LoginRequest;
+import com.example.bizly1.models.LoginResponse;
 import com.example.bizly1.models.ProductoVenta;
+import com.example.bizly1.models.RegisterRequest;
 import com.example.bizly1.models.Sucursal;
 import com.example.bizly1.models.Venta;
 
@@ -19,7 +23,35 @@ import retrofit2.http.Path;
 
 public interface ApiService {
     
-    String BASE_URL = "http://tu-api-url.com/"; // TODO: Cambiar por la URL real de tu API
+    String BASE_URL = "https://apibizly.onrender.com/";
+    
+    // ==================== ENDPOINTS DE AUTENTICACIÓN ====================
+    
+    @POST("api/auth/login")
+    Call<LoginResponse> login(@Body LoginRequest loginRequest);
+    
+    @POST("api/auth/registro-emprendedor")
+    Call<LoginResponse> registroEmprendedor(@Body RegisterRequest registerRequest);
+    
+    @GET("api/auth/test")
+    Call<String> testApi();
+    
+    // ==================== ENDPOINTS DE EMPRESAS ====================
+    
+    @GET("api/empresas")
+    Call<List<Empresa>> obtenerTodasEmpresas();
+    
+    @GET("api/empresas/{id}")
+    Call<Empresa> obtenerEmpresa(@Path("id") int id);
+    
+    @POST("api/empresas")
+    Call<Empresa> crearEmpresa(@Body Empresa empresa);
+    
+    @PUT("api/empresas/{id}")
+    Call<Empresa> actualizarEmpresa(@Path("id") int id, @Body Empresa empresa);
+    
+    @DELETE("api/empresas/{id}")
+    Call<Void> eliminarEmpresa(@Path("id") int id);
     
     // ==================== ENDPOINTS INSUMOS ====================
     

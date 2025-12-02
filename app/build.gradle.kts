@@ -41,6 +41,7 @@ dependencies {
     // RecyclerView y CardView
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.gridlayout:gridlayout:1.0.0")
     
     // Retrofit y Gson
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

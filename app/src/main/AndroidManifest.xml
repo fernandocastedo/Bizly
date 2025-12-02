@@ -30,6 +30,22 @@
         </activity>
         
         <activity
+            android:name=".auth.LoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+            
+        <activity
+            android:name=".auth.RegisterActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".auth.LoginActivity" />
+            
+        <activity
+            android:name=".auth.ConfiguracionEmprendimientoActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        
+        <activity
             android:name=".inventario.InventoryActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
