@@ -33,6 +33,10 @@
             android:name="com.bizly.app.presentation.dashboard.DashboardActivity"
             android:exported="false"
             android:parentActivityName="com.bizly.app.MainActivity" />
+        <activity
+            android:name="com.bizly.app.presentation.emprendimiento.EmprendimientoActivity"
+            android:exported="false"
+            android:parentActivityName="com.bizly.app.presentation.dashboard.DashboardActivity" />
     </application>
 
 </manifest>

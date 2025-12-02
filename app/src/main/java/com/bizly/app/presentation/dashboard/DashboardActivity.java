@@ -117,8 +117,9 @@ public class DashboardActivity extends AppCompatActivity {
     private void setupListeners() {
         // Botón editar emprendimiento
         editarEmprendimientoButton.setOnClickListener(v -> {
-            // TODO: Navegar a EmprendimientoActivity cuando se implemente
-            Toast.makeText(this, "Módulo de edición de emprendimiento próximamente", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, com.bizly.app.presentation.emprendimiento.EmprendimientoActivity.class);
+            intent.putExtra("usuario_id", usuarioId);
+            startActivity(intent);
         });
         
         // Cards de acceso rápido (placeholders por ahora)
