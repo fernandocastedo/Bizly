@@ -119,6 +119,19 @@
             app:cornerRadius="12dp"
             app:backgroundTint="@color/primary_color" />
 
+        <!-- Botón temporal para probar Clientes -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTestClientes"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="24dp"
+            android:text="👥 Probar Clientes (Temporal)"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            app:cornerRadius="12dp"
+            app:backgroundTint="#2196F3" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
