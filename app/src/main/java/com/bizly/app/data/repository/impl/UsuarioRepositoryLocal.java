@@ -39,14 +39,26 @@ public class UsuarioRepositoryLocal implements UsuarioRepository {
     
     @Override
     public Usuario iniciarSesion(String email, String password) {
+        // Este método ya no se usa directamente
+        // Se debe usar IniciarSesionUseCase que maneja el hash correctamente
+        // Se mantiene por compatibilidad pero debería ser deprecado
         UsuarioEntity entity = usuarioDao.obtenerPorEmail(email);
         
         if (entity == null) {
             return null; // Usuario no encontrado
         }
         
-        // Verificar contraseña (en producción, usar hash)
-        if (!entity.password.equals(password)) {
+        // Verificar contraseña (compatibilidad: si tiene formato hash, usar verificación)
+        boolean passwordValido = false;
+        if (entity.password.contains(":")) {
+            // Formato con hash
+            passwordValido = com.bizly.app.domain.service.HashPasswordService.verificarPassword(password, entity.password);
+        } else {
+            // Formato antiguo (texto plano) - para compatibilidad durante desarrollo
+            passwordValido = entity.password.equals(password);
+        }
+        
+        if (!passwordValido) {
             return null; // Contraseña incorrecta
         }
         
