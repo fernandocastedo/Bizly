@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <!-- Header del Diálogo -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Fondo Azul -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_hexagonal_pattern" />
+            
+        <!-- Título -->
+        <TextView
+            android:id="@+id/txtDialogTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="24dp"
+            android:text="Productos Detectados"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white" />
+            
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Contenedor de lista de productos -->
+            <LinearLayout
+                android:id="@+id/containerProductList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Revise los productos detectados:"
+                    android:textColor="#1A3D64"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerDetectedProducts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="300dp"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/txtEmptyMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No se pudieron detectar productos automáticamente."
+                    android:textSize="14sp"
+                    android:textColor="#666"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:visibility="gone"
+                    android:background="#F5F5F5" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnConfirmAll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Confirmar Todos"
+                    android:layout_marginTop="24dp"
+                    style="@style/Widget.MaterialComponents.Button"
+                    app:cornerRadius="8dp" />
+
+            </LinearLayout>
+
+            <!-- Contenedor de formulario de edición -->
+            <LinearLayout
+                android:id="@+id/containerEditForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Editar Producto"
+                    android:textColor="#1A3D64"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    app:boxBackgroundColor="#F5F5F5"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeWidth="0dp">
+
+                    <EditText
+                        android:id="@+id/edtName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nombre del producto"
+                        android:inputType="textCapWords"
+                        android:background="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="12dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                        app:boxBackgroundColor="#F5F5F5"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxStrokeWidth="0dp">
+
+                        <EditText
+                            android:id="@+id/edtQuantity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Cantidad"
+                            android:inputType="numberDecimal"
+                            android:background="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="12dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                        app:boxBackgroundColor="#F5F5F5"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxStrokeWidth="0dp">
+
+                        <EditText
+                            android:id="@+id/edtUnit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Unidad"
+                            android:inputType="text"
+                            android:background="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    app:boxBackgroundColor="#F5F5F5"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeWidth="0dp">
+
+                    <EditText
+                        android:id="@+id/edtUnitPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Precio unitario"
+                        android:inputType="numberDecimal"
+                        android:background="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    app:boxBackgroundColor="#F5F5F5"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeWidth="0dp">
+
+                    <EditText
+                        android:id="@+id/edtTotalPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Precio total"
+                        android:inputType="numberDecimal"
+                        android:background="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    app:boxBackgroundColor="#F5F5F5"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeWidth="0dp">
+
+                    <EditText
+                        android:id="@+id/edtCategoria"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Categoría"
+                        android:inputType="text"
+                        android:background="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="end">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCancelEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cancelar"
+                        android:layout_marginEnd="8dp"
+                        style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnConfirmEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Guardar"
+                        app:cornerRadius="8dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

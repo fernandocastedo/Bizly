@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".clientes.ClienteFormActivity">
+
+    <!-- Header azul con patrón hexagonal -->
+    <View
+        android:id="@+id/headerBackground"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_hexagonal_pattern"
+        app:layout_constraintHeight_percent="0.33"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Botón de flecha atrás -->
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/back"
+        android:src="@drawable/ic_arrow_back_white"
+        android:tint="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Título Header -->
+
+    <!-- Anchor auxiliar -->
+    <TextView
+        android:id="@+id/headerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="110dp"
+        android:letterSpacing="0.05"
+        android:text="Nuevo Cliente"
+        android:textColor="@android:color/white"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/cardAnchor"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/cardAnchor"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/headerBackground"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Tarjeta blanca sobrepuesta -->
+    <FrameLayout
+        android:id="@+id/formCard"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="-130dp"
+        android:background="@drawable/card_top_rounded"
+        android:elevation="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/headerBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="736dp"
+            android:clipToPadding="false"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="32dp"
+            android:paddingBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Información del cliente"
+                        android:textColor="#1A3D64"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_centerVertical="true" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGuardar"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_alignParentEnd="true"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:cornerRadius="24dp"
+                        app:icon="@drawable/ic_check"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconTint="@android:color/white"
+                        app:backgroundTint="@color/primary_color"
+                        app:elevation="2dp"
+                        android:text="" />
+                </RelativeLayout>
+
+                <!-- Nombre -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Nombre del Cliente *"
+                    android:textColor="#1A3D64"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutNombre"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxBackgroundColor="#F5F5F5"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeWidth="0dp"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etNombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="Escriba el nombre"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:minHeight="56dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:gravity="center_vertical"
+                        android:textColorHint="#A0A0A0" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- NIT -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="NIT / CI"
+                    android:textColor="#1A3D64"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutNit"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxBackgroundColor="#F5F5F5"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeWidth="0dp"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etNit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="0000000"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:minHeight="56dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:gravity="center_vertical"
+                        android:textColorHint="#A0A0A0" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Teléfono -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Teléfono"
+                    android:textColor="#1A3D64"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutTelefono"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxBackgroundColor="#F5F5F5"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeWidth="0dp"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etTelefono"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="70000000"
+                        android:inputType="phone"
+                        android:maxLines="1"
+                        android:minHeight="56dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:gravity="center_vertical"
+                        android:textColorHint="#A0A0A0" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Email -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Correo Electrónico"
+                    android:textColor="#1A3D64"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutEmail"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxBackgroundColor="#F5F5F5"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeWidth="0dp"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="ejemplo@correo.com"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:minHeight="56dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:gravity="center_vertical"
+                        android:textColorHint="#A0A0A0" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Dirección -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Dirección"
+                    android:textColor="#1A3D64"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutDireccion"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    app:boxBackgroundColor="#F5F5F5"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeWidth="0dp"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDireccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="Dirección completa"
+                        android:inputType="textPostalAddress"
+                        android:maxLines="2"
+                        android:minHeight="56dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:gravity="center_vertical"
+                        android:textColorHint="#A0A0A0" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

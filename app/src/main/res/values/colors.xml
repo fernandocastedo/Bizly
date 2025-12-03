@@ -5,8 +5,4 @@
     <color name="primary_color">#FF1A3D64</color>
     <color name="light_blue">#FF64B5F6</color>
     <color name="gray_text">#FF757575</color>
-    <color name="header_blue">#FF1A3D64</color>
-    <color name="pattern_blue">#FF2A4D74</color>
-    <color name="light_gray_bg">#FFF5F5F5</color>
-    <color name="soft_gray_bg">#FFE8E8E8</color>
 </resources>

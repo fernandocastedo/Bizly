@@ -1,9 +1,11 @@
 package com.example.bizly1;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -14,15 +16,17 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextInputEditText fullNameEditText;
     private TextInputEditText emailEditText;
     private TextInputEditText passwordEditText;
     private TextInputEditText confirmPasswordEditText;
-    private MaterialButton registerButton;
-    private ImageButton backButton;
+    private CheckBox termsCheckbox;
+    private MaterialButton continueButton;
+    private View backButton;
+    private TextView termsLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +45,26 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        fullNameEditText = findViewById(R.id.fullNameEditText);
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
-        registerButton = findViewById(R.id.registerButton);
+        termsCheckbox = findViewById(R.id.termsCheckbox);
+        continueButton = findViewById(R.id.continueButton);
         backButton = findViewById(R.id.backButton);
+        termsLink = findViewById(R.id.termsLink);
     }
 
     private void setupListeners() {
         backButton.setOnClickListener(v -> finish());
 
-        registerButton.setOnClickListener(v -> {
+        termsLink.setOnClickListener(v -> {
+            // Aquí puedes abrir los términos y condiciones
+            // Por ejemplo, abrir una URL o una nueva Activity
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://example.com/terms"));
+            startActivity(intent);
+        });
+
+        continueButton.setOnClickListener(v -> {
             if (validateInputs()) {
                 // Aquí puedes agregar la lógica para registrar al usuario
                 Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show();
@@ -62,15 +74,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private boolean validateInputs() {
-        String fullName = fullNameEditText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString();
         String confirmPassword = confirmPasswordEditText.getText().toString();
-
-        if (fullName.isEmpty()) {
-            fullNameEditText.setError("Por favor ingresa tu nombre completo");
-            return false;
-        }
 
         if (email.isEmpty()) {
             emailEditText.setError("Por favor ingresa tu correo electrónico");
@@ -99,6 +105,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (!password.equals(confirmPassword)) {
             confirmPasswordEditText.setError("Las contraseñas no coinciden");
+            return false;
+        }
+
+        if (!termsCheckbox.isChecked()) {
+            Toast.makeText(this, "Debes aceptar los términos y condiciones", Toast.LENGTH_SHORT).show();
             return false;
         }
 

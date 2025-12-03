@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="300dp"
+    android:viewportWidth="400"
+    android:viewportHeight="300">
+    
+    <!-- Líneas de conexión y hexágonos estilo "panal" -->
+    <!-- Opacidad baja blanca para que contraste con el azul de fondo -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#30FFFFFF"
+        android:strokeWidth="2"
+        android:pathData="
+        M50,0 L100,25 L100,75 L50,100 L0,75 L0,25 L50,0 Z
+        M200,0 L250,25 L250,75 L200,100 L150,75 L150,25 L200,0 Z
+        M350,0 L400,25 L400,75 L350,100 L300,75 L300,25 L350,0 Z
+        
+        M125,40 L175,65 L175,115 L125,140 L75,115 L75,65 L125,40 Z
+        M275,40 L325,65 L325,115 L275,140 L225,115 L225,65 L275,40 Z
+        
+        M50,120 L100,145 L100,195 L50,220 L0,195 L0,145 L50,120 Z
+        M200,120 L250,145 L250,195 L200,220 L150,195 L150,145 L200,120 Z
+        M350,120 L400,145 L400,195 L350,220 L300,195 L300,145 L350,120 Z
+        
+        M125,160 L175,185 L175,235 L125,260 L75,235 L75,185 L125,160 Z
+        M275,160 L325,185 L325,235 L275,260 L225,235 L225,185 L275,160 Z
+        
+        M50,240 L100,265 L100,315 L50,340 L0,315 L0,265 L50,240 Z
+        M200,240 L250,265 L250,315 L200,340 L150,315 L150,265 L200,240 Z
+        M350,240 L400,265 L400,315 L350,340 L300,315 L300,265 L350,240 Z
+        "/>
+        
+    <!-- Algunos hexágonos rellenos sutilmente -->
+    <path
+        android:fillColor="#10FFFFFF"
+        android:pathData="M50,0 L100,25 L100,75 L50,100 L0,75 L0,25 Z" />
+    <path
+        android:fillColor="#15FFFFFF"
+        android:pathData="M275,40 L325,65 L325,115 L275,140 L225,115 L225,65 Z" />
+    <path
+        android:fillColor="#10FFFFFF"
+        android:pathData="M125,160 L175,185 L175,235 L125,260 L75,235 L75,185 Z" />
+        
+</vector>
+
+
+

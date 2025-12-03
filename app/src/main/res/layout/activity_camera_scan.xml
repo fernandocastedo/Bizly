@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".inventario.CameraScanActivity">
+
+    <!-- Header azul con patrón hexagonal -->
+    <View
+        android:id="@+id/headerBackground"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_hexagonal_pattern"
+        app:layout_constraintHeight_percent="0.33"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Botón de flecha atrás -->
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/back"
+        android:src="@drawable/ic_arrow_back_white"
+        android:tint="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Título Header -->
+    <TextView
+        android:id="@+id/headerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/scan_header_title"
+        android:textColor="@android:color/white"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.05"
+        android:layout_marginBottom="35dp"
+        android:layout_marginStart="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardAnchor"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Anchor auxiliar -->
+    <View
+        android:id="@+id/cardAnchor"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/headerBackground"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Tarjeta blanca sobrepuesta -->
+    <FrameLayout
+        android:id="@+id/scanCard"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="-50dp"
+        android:background="@drawable/card_top_rounded"
+        android:elevation="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/headerBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="24dp">
+
+            <!-- Título Tarjeta -->
+            <TextView
+                android:id="@+id/cardTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scan_card_title"
+                android:textColor="#1A3D64"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Subtítulo -->
+            <TextView
+                android:id="@+id/cardSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scan_card_subtitle"
+                android:textColor="#505050"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardTitle" />
+
+            <!-- Contenedor de Cámara -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cameraContainer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#F5F5F5"
+                app:layout_constraintTop_toBottomOf="@id/cardSubtitle"
+                app:layout_constraintBottom_toTopOf="@id/btnCapture"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <androidx.camera.view.PreviewView
+                    android:id="@+id/previewView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                
+            </androidx.cardview.widget.CardView>
+
+            <!-- Botón Capturar -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCapture"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="@string/btn_capture_photo"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                app:backgroundTint="@color/primary_color"
+                app:cornerRadius="12dp"
+                app:icon="@android:drawable/ic_menu_camera"
+                app:iconGravity="textStart"
+                app:iconTint="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

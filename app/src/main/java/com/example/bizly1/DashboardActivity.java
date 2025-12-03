@@ -3,6 +3,8 @@ package com.example.bizly1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -11,8 +13,9 @@ import com.google.android.material.button.MaterialButton;
 public class DashboardActivity extends AppCompatActivity {
 
     private MaterialButton btnAddProduct, btnAddSupply;
-    private MaterialButton btnInventory, btnSales, btnCustomers, btnEmployees, btnCosts, btnExpenses;
     private BottomNavigationView bottomNavigationView;
+    private ImageView userIcon, notificationIcon;
+    private TextView welcomeText, userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +27,11 @@ public class DashboardActivity extends AppCompatActivity {
         btnAddSupply = findViewById(R.id.btnAddSupply);
         bottomNavigationView = findViewById(R.id.bottomNavigation);
         
-        // Grid Buttons
-        btnInventory = findViewById(R.id.btnInventory);
-        btnSales = findViewById(R.id.btnSales);
-        btnCustomers = findViewById(R.id.btnCustomers);
-        btnEmployees = findViewById(R.id.btnEmployees);
-        btnCosts = findViewById(R.id.btnCosts);
-        btnExpenses = findViewById(R.id.btnExpenses);
+        // Header views
+        userIcon = findViewById(R.id.userIcon);
+        notificationIcon = findViewById(R.id.notificationIcon);
+        welcomeText = findViewById(R.id.welcomeText);
+        userName = findViewById(R.id.userName);
 
         // Setup Buttons
         btnAddProduct.setOnClickListener(new View.OnClickListener() {
@@ -49,39 +50,37 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
         
-        // Grid Click Listeners
-        View.OnClickListener gridClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = "";
-                if (v.getId() == R.id.btnInventory) text = "Inventario";
-                else if (v.getId() == R.id.btnSales) text = "Ventas";
-                else if (v.getId() == R.id.btnCustomers) text = "Clientes";
-                else if (v.getId() == R.id.btnEmployees) text = "Empleado";
-                else if (v.getId() == R.id.btnCosts) text = "Costos";
-                else if (v.getId() == R.id.btnExpenses) text = "Gastos";
-                
-                Toast.makeText(DashboardActivity.this, text, Toast.LENGTH_SHORT).show();
-            }
-        };
+        // Header listeners
+        userIcon.setOnClickListener(v -> {
+            // Navigate to profile or settings
+            Toast.makeText(DashboardActivity.this, "Perfil de usuario", Toast.LENGTH_SHORT).show();
+        });
         
-        btnInventory.setOnClickListener(gridClickListener);
-        btnSales.setOnClickListener(gridClickListener);
-        btnCustomers.setOnClickListener(gridClickListener);
-        btnEmployees.setOnClickListener(gridClickListener);
-        btnCosts.setOnClickListener(gridClickListener);
-        btnExpenses.setOnClickListener(gridClickListener);
+        notificationIcon.setOnClickListener(v -> {
+            // Show notifications
+            Toast.makeText(DashboardActivity.this, "Sin notificaciones nuevas", Toast.LENGTH_SHORT).show();
+        });
         
         // Setup Bottom Navigation
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_home) {
                 return true;
-            } else if (itemId == R.id.nav_metrics) {
-                Toast.makeText(this, "Métricas", Toast.LENGTH_SHORT).show();
+            } else if (itemId == R.id.nav_products) {
+                // Navigate to Products list
+                // Intent intent = new Intent(DashboardActivity.this, ProductsActivity.class);
+                // startActivity(intent);
+                Toast.makeText(this, "Productos", Toast.LENGTH_SHORT).show();
                 return true;
-            } else if (itemId == R.id.nav_profile) {
-                Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show();
+            } else if (itemId == R.id.nav_sales) {
+                // Navigate to Sales
+                // Intent intent = new Intent(DashboardActivity.this, SalesActivity.class);
+                // startActivity(intent);
+                Toast.makeText(this, "Ventas", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (itemId == R.id.nav_reports) {
+                // Navigate to Reports
+                Toast.makeText(this, "Reportes", Toast.LENGTH_SHORT).show();
                 return true;
             }
             return false;

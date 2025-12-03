@@ -1,42 +1,68 @@
 <resources>
-    <string name="app_name">Bizly1</string>
+    <string name="app_name">Bizly</string>
     <string name="app_logo">Logo de Bizly</string>
     <string name="email_hint">Correo electrónico</string>
     <string name="password_hint">Contraseña</string>
     <string name="login_button">Iniciar sesión</string>
     <string name="register_button">Crear cuenta</string>
+    
+    <!-- Login Screen Strings -->
     <string name="login_title">Iniciar Sesion</string>
-    <string name="welcome_title">¡Bienvenido a Bizly!</string>
+    <string name="welcome_bizly">¡Bienvenido a Bizly!</string>
     <string name="welcome_subtitle_login">DONDE VENDES CON INTELIGENCIA.</string>
+    <string name="email_label">Correo electronico</string>
     <string name="email_placeholder">Escriba su correo electronico</string>
+    <string name="password_label">Contraseña</string>
     <string name="password_placeholder">Escriba su contraseña</string>
-    <string name="register_question">¿No tienes una cuenta?</string>
+    <string name="no_account_question">¿No tienes una cuenta?</string>
     <string name="register_link">Registrate</string>
 
-    <!-- Dashboard Strings -->
-    <string name="dashboard_title">Dashboard</string>
-    <string name="welcome_subtitle">¡Bienvenido!</string>
-    <string name="btn_add_product">Agregar\nProducto</string>
-    <string name="btn_add_supply">Agregar\nInsumo</string>
-    
-    <!-- Dashboard Grid Buttons -->
-    <string name="btn_inventory">Inventario</string>
-    <string name="btn_sales">Ventas</string>
-    <string name="btn_customers">Clientes</string>
-    <string name="btn_employees">Empleado</string>
-    <string name="btn_costs">Costos</string>
-    <string name="btn_expenses">Gastos</string>
+    <!-- Register Screen Strings -->
+    <string name="register_header_title">Registrate</string>
+    <string name="create_account_title">Crea tu cuenta</string>
+    <string name="create_account_subtitle">Y ABRE TUS POSIBILIDADES.</string>
+    <string name="name_label">Nombre completo</string>
+    <string name="name_placeholder">John Doe</string>
+    <string name="confirm_password_placeholder">Confirma la contraseña</string>
+    <string name="btn_register">Registrar</string>
+    <string name="already_account_question">¿Ya tienes una cuenta?</string>
+    <string name="login_link">Inicia Sesión</string>
 
-    <!-- Bottom Nav -->
-    <string name="nav_home">Inicio</string>
-    <string name="nav_metrics">Métricas</string>
-    <string name="nav_profile">Perfil</string>
+    <!-- Dashboard Strings -->
+    <string name="dashboard_welcome">HOLA DE NUEVO,</string>
+    <string name="dashboard_username">John Doe</string>
+    <string name="banner_title">¡Obtuviste 500 ventas hoy!</string>
+    <string name="banner_subtitle">Revisa tus productos más vendidos.</string>
+    <string name="section_summary">Resumen del Dia</string>
+    <string name="section_quick_actions">Acciones rapidas</string>
+    
+    <!-- Metrics Cards -->
+    <string name="metric_worker_title">Trabajador\nDestacado</string>
+    <string name="metric_worker_value">Jessica Alvarez</string>
+    <string name="metric_critical_title">Producto\nCritico</string>
+    <string name="metric_critical_value">Hamburguesa\nClasica</string>
+    <string name="metric_income_title">Total Ingresos</string>
+    <string name="metric_income_value">550 Bs.</string>
+    <string name="metric_product_title">Producto\nDestacado</string>
+    <string name="metric_product_value">Papas con\nCheddar</string>
+
+    <!-- Actions -->
+    <string name="action_add_product">Agregar\nProducto</string>
+    <string name="action_add_supply">Agregar\nInsumo</string>
+    
+    <!-- Camera Scan Strings -->
+    <string name="scan_header_title">Escanear</string>
+    <string name="scan_card_title">Captura de Factura</string>
+    <string name="scan_card_subtitle">Alinea el documento dentro del marco.</string>
+    <string name="btn_capture_photo">Capturar</string>
+    <string name="nav_products">Productos</string>
+    <string name="nav_sales">Ventas</string>
+    <string name="nav_reports">Reportes</string>
 
     <!-- Add Product Strings -->
     <string name="title_create_new_product">Crear nuevo producto</string>
     <string name="btn_save">Guardar</string>
     <string name="btn_add_img">Añadir Img</string>
-    <string name="btn_add_photo">Agregar foto</string>
     <string name="label_scan_invoice">Escanear Factura</string>
     <string name="hint_product_title">Título del Producto</string>
     <string name="hint_description">Descripción</string>
@@ -59,16 +85,7 @@
     <string name="back">Atrás</string>
     <string name="register_title">Crear Cuenta</string>
     <string name="register_heading">Regístrate</string>
-    <string name="register_header_title">Registrate</string>
-    <string name="register_main_title">Crea tu cuenta</string>
-    <string name="register_subtitle">Y ABRE TUS POSIBILIDADES.</string>
-    <string name="full_name_label">Nombre completo</string>
-    <string name="full_name_placeholder">John Doe</string>
-    <string name="email_placeholder_register">name@example.com</string>
-    <string name="password_placeholder_register">Escriba una contraseña segura</string>
-    <string name="confirm_password_placeholder">Confirma la contraseña</string>
-    <string name="confirm_password_hint">Confirma la contraseña</string>
-    <string name="register_button_text">Registrar</string>
+    <string name="confirm_password_hint">Confirmar Contraseña</string>
     <string name="terms_text">Acepto los</string>
     <string name="terms_link">Términos y Condiciones</string>
     <string name="continue_button">Continuar</string>

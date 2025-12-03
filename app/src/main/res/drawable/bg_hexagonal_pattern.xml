@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Fondo azul sólido -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/primary_color" />
+        </shape>
+    </item>
+    
+    <!-- Patrón vectorial fijo superpuesto -->
+    <!-- Usamos el vector directamente. scaleType no existe aquí, pero gravity fill tratará de llenarlo -->
+    <item android:drawable="@drawable/vector_hex_pattern_fixed"
+          android:gravity="center" />
+</layer-list>

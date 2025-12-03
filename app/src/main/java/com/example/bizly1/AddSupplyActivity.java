@@ -18,7 +18,7 @@ public class AddSupplyActivity extends AppCompatActivity {
     private TextInputEditText etPrice, etQuantity;
     private TextView tvTotalPrice;
     private Spinner spinnerUnit;
-    private MaterialButton btnBottomAdd, btnTopSave;
+    private MaterialButton btnTopSave;
     private ImageButton btnBack;
 
     @Override
@@ -31,7 +31,6 @@ public class AddSupplyActivity extends AppCompatActivity {
         etQuantity = findViewById(R.id.etQuantity);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
         spinnerUnit = findViewById(R.id.spinnerUnit);
-        btnBottomAdd = findViewById(R.id.btnBottomAdd);
         btnTopSave = findViewById(R.id.btnTopSave);
         btnBack = findViewById(R.id.btnBack);
 
@@ -61,7 +60,6 @@ public class AddSupplyActivity extends AppCompatActivity {
         etQuantity.addTextChangedListener(calculationWatcher);
 
         // Setup Save/Add Buttons
-        btnBottomAdd.setOnClickListener(v -> saveSupply());
         btnTopSave.setOnClickListener(v -> saveSupply());
     }
 
@@ -89,6 +87,9 @@ public class AddSupplyActivity extends AppCompatActivity {
         finish();
     }
 }
+
+
+
 
 
 

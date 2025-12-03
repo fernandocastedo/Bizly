@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <!-- Header del Diálogo -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Fondo Azul -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_hexagonal_pattern" />
+            
+        <!-- Título -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="24dp"
+            android:text="Seleccionar Producto"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white" />
+            
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Buscar -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="Buscar producto"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            app:boxBackgroundColor="#F5F5F5"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxStrokeWidth="0dp"
+            app:hintEnabled="false">
+
+            <EditText
+                android:id="@+id/etBuscar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@null"
+                android:hint="Buscar producto"
+                android:textColorHint="#A0A0A0"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:gravity="center_vertical"
+                android:inputType="text"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Lista de productos -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewProductos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="400dp"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Mensaje vacío -->
+        <TextView
+            android:id="@+id/txtEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No se encontraron productos"
+            android:textSize="14sp"
+            android:textColor="#666"
+            android:gravity="center"
+            android:padding="24dp"
+            android:visibility="gone"
+            android:background="#F5F5F5" />
+
+    </LinearLayout>
+</LinearLayout>
